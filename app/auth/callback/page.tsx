@@ -1,20 +1,19 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect, useState, Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 
-export default function AuthCallbackPage() {
+function AuthCallbackHandler() {
     const router = useRouter();
+    const searchParams = useSearchParams();
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        // Handle the exchange of the auth code for a session
         const handleAuthCallback = async () => {
-            const url = new URL(window.location.href);
-            const code = url.searchParams.get("code");
-            const next = url.searchParams.get("next") || "/datasets";
-            const errorDescription = url.searchParams.get("error_description");
+            const code = searchParams.get("code");
+            const next = searchParams.get("next") || "/datasets";
+            const errorDescription = searchParams.get("error_description");
 
             if (errorDescription) {
                 setError(errorDescription);
@@ -24,29 +23,24 @@ export default function AuthCallbackPage() {
 
             try {
                 if (code) {
-                    // PKCE Flow: Exchange code for session
                     const { data, error } = await supabase.auth.exchangeCodeForSession(code);
                     if (error) throw error;
 
                     if (data?.session?.user) {
                         router.push(next);
-                        return; // Done
+                        return;
                     }
                 }
 
-                // Implicit Flow / Existing Session Check
-                // If there was no code, or if we want to double check session existence
                 const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
 
                 if (sessionData?.session?.user) {
-                    // We have a valid session (maybe from hash or persisted)
                     router.push(next);
                     return;
                 }
 
                 if (sessionError) throw sessionError;
 
-                // If we got here, we have no code and no session
                 console.warn("No session or code found in callback");
                 router.push("/signin?error=No session found");
 
@@ -58,26 +52,53 @@ export default function AuthCallbackPage() {
         };
 
         handleAuthCallback();
-    }, [router]);
+    }, [router, searchParams]);
 
     if (error) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-white">
-                <div className="text-center">
-                    <h2 className="text-xl font-bold text-red-600 mb-2">Sign In Failed</h2>
-                    <p className="text-gray-600">{error}</p>
-                    <p className="text-sm text-gray-500 mt-4">Redirecting you to sign in...</p>
+            <div className="text-center p-8 bg-slate-800/40 backdrop-blur-md rounded-2xl border border-red-500/20 shadow-2xl relative z-10">
+                <div className="h-12 w-12 bg-red-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <svg className="h-6 w-6 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </div>
+                <h2 className="text-2xl font-black text-white mb-3 tracking-tight">Sign In Failed</h2>
+                <p className="text-slate-400 font-medium mb-6">{error}</p>
+                <div className="flex items-center justify-center gap-2 text-xs font-bold text-slate-500 uppercase tracking-widest">
+                    <div className="animate-spin h-3 w-3 border-b-2 border-slate-500 rounded-full"></div>
+                    Redirecting to sign in...
                 </div>
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-white">
-            <div className="text-center">
-                <h2 className="text-2xl font-semibold text-gray-900 mb-2">Verifying your login...</h2>
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
+        <div className="text-center p-12 bg-slate-800/40 backdrop-blur-md rounded-2xl border border-white/5 shadow-2xl relative z-10 w-full max-w-md">
+            <h2 className="text-3xl font-black text-white mb-8 tracking-tight">Verifying Identity</h2>
+            <div className="relative h-20 w-20 mx-auto mb-8">
+                <div className="absolute inset-0 bg-brand-emerald/20 rounded-full blur-xl animate-pulse"></div>
+                <div className="relative h-full w-full rounded-full border-4 border-slate-700 border-t-brand-emerald animate-spin"></div>
             </div>
+            <p className="text-slate-400 font-bold uppercase tracking-[0.2em] text-[10px]">
+                Connecting to Secure Server
+            </p>
         </div>
+    );
+}
+
+export default function AuthCallbackPage() {
+    return (
+        <main className="min-h-screen bg-brand-slate-dark flex items-center justify-center p-4 relative overflow-hidden">
+            {/* Background Glow */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-brand-emerald/5 rounded-full blur-[120px] pointer-events-none"></div>
+
+            <Suspense fallback={
+                <div className="text-center p-12 bg-slate-800/40 backdrop-blur-md rounded-2xl border border-white/5 shadow-2xl">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-emerald mx-auto"></div>
+                </div>
+            }>
+                <AuthCallbackHandler />
+            </Suspense>
+        </main>
     );
 }
