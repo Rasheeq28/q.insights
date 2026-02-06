@@ -14,6 +14,7 @@ export const metadata: Metadata = {
 // Force rebuild triggered at 22:35
 
 import BrandLogo from "@/components/BrandLogo";
+import Link from "next/link";
 
 export default function RootLayout({
   children,
@@ -31,13 +32,17 @@ export default function RootLayout({
 
         <footer className="bg-brand-slate-950 border-t border-white/5 mt-auto">
           <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
-            <div className="flex items-center gap-3">
-              <BrandLogo size="sm" />
-              <span className="text-white font-bold text-base tracking-tight">Q<span className="text-brand-emerald">.</span>Labs</span>
-            </div>
+            <Link href="/" className="flex-shrink-0 flex items-center transition-opacity hover:opacity-80">
+              <img
+                src="/logo.png"
+                alt="Logo"
+                className="h-8 w-auto object-contain"
+                suppressHydrationWarning
+              />
+            </Link>
 
             <div className="text-slate-500 text-xs">
-              &copy; {new Date().getFullYear()} Q.Labs Platform. All rights reserved.
+              &copy; {new Date().getFullYear()} Platform. All rights reserved.
             </div>
 
             <div className="flex gap-6">
