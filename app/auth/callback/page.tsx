@@ -27,6 +27,15 @@ function AuthCallbackHandler() {
                     if (error) throw error;
 
                     if (data?.session?.user) {
+                        const { user } = data.session;
+
+                        // Sync user to public.users table
+                        await supabase.from('users').upsert({
+                            id: user.id,
+                            email: user.email,
+                            created_at: new Date().toISOString(),
+                        }, { onConflict: 'id', ignoreDuplicates: true });
+
                         router.push(next);
                         return;
                     }
