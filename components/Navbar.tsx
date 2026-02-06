@@ -1,68 +1,52 @@
 "use client";
 
 import Link from "next/link";
+import BrandLogo from "./BrandLogo";
 
 export default function Navbar() {
   return (
-    <nav className="bg-white border-b border-gray-200 fixed w-full z-30 top-0 left-0">
+    <nav className="bg-brand-slate-dark/80 backdrop-blur-md border-b border-white/5 fixed w-full z-50 top-0 left-0 transition-all">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16">
-          <div className="flex">
-            <div className="flex-shrink-0 flex items-center gap-2" suppressHydrationWarning>
-              <img
-                src="/logo.png"
-                alt="Q.Labs Logo"
-                className="h-8 w-auto object-contain"
-                suppressHydrationWarning
-                onError={(e) => {
-                  // Fallback if image not found
-                  e.currentTarget.style.display = 'none';
-                  e.currentTarget.nextElementSibling?.classList.remove('hidden');
-                }}
-              />
-              {/* Fallback placeholder if image is missing */}
-              <div
-                className="hidden h-8 w-8 bg-blue-100 rounded-md flex items-center justify-center"
-                suppressHydrationWarning
-              >
-                <span className="text-xs text-blue-500 font-bold">Q</span>
-              </div>
+        <div className="flex justify-between h-20">
+          <div className="flex items-center">
+            <div className="flex-shrink-0 flex items-center gap-3">
+              <BrandLogo size="md" />
 
-              <Link href="/" className="text-2xl font-bold text-blue-600 tracking-tight">
-                Q.Labs
+              <Link href="/" className="text-2xl font-bold text-white tracking-tighter flex items-center gap-1">
+                Q<span className="text-brand-emerald">.</span>Labs
               </Link>
             </div>
-            <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
+            <div className="hidden sm:ml-10 sm:flex sm:space-x-8">
               <Link
                 href="/datasets"
-                className="border-transparent text-gray-500 hover:border-blue-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+                className="text-slate-400 hover:text-white transition-colors border-transparent inline-flex items-center px-1 pt-1 text-sm font-semibold"
               >
                 Datasets
               </Link>
               <Link
                 href="#"
-                className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+                className="text-slate-400 hover:text-white transition-colors border-transparent inline-flex items-center px-1 pt-1 text-sm font-semibold"
               >
                 Documentation
               </Link>
               <Link
                 href="#"
-                className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+                className="text-slate-400 hover:text-white transition-colors border-transparent inline-flex items-center px-1 pt-1 text-sm font-semibold"
               >
                 Pricing
               </Link>
             </div>
           </div>
-          <div className="flex items-center">
+          <div className="flex items-center gap-4">
             <Link
               href="/signin"
-              className="text-gray-500 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
+              className="text-slate-400 hover:text-white transition-colors px-4 py-2 text-sm font-semibold"
             >
-              Sign in
+              Sign In
             </Link>
             <Link
               href="/signin"
-              className="ml-3 inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              className="inline-flex items-center justify-center px-6 py-2.5 border border-transparent text-sm font-bold rounded-lg shadow-[0_0_20px_rgba(16,185,129,0.3)] text-slate-950 bg-brand-emerald hover:bg-brand-emerald-hover hover:scale-105 active:scale-95 transition-all focus:outline-none"
             >
               Get Started
             </Link>

@@ -30,68 +30,38 @@ export default function Filters() {
   };
 
   return (
-    <div className="space-y-8">
-      <div>
-        <h3 className="font-semibold text-gray-900 mb-4">Category</h3>
-        <div className="space-y-2">
-          <label className="flex items-center space-x-2 cursor-pointer group">
-            <input
-              type="radio"
-              name="category"
-              checked={!currentCategory}
-              onChange={() => updateFilter("category", null)}
-              className="text-blue-600 focus:ring-blue-500 border-gray-300"
-            />
-            <span className={`text-sm ${!currentCategory ? 'text-gray-900 font-medium' : 'text-gray-600 group-hover:text-gray-900'}`}>All Categories</span>
-          </label>
-          {CATEGORIES.map((category) => (
-            <label key={category} className="flex items-center space-x-2 cursor-pointer group">
+    <div className="space-y-10" suppressHydrationWarning>
+      <div suppressHydrationWarning>
+        <h3 className="text-xs font-black tracking-widest text-slate-500 uppercase mb-6">Category</h3>
+        <div className="space-y-4" suppressHydrationWarning>
+          <label className="flex items-center space-x-3 cursor-pointer group">
+            <div className="relative flex items-center justify-center">
               <input
                 type="radio"
                 name="category"
-                checked={currentCategory === category}
-                onChange={() => updateFilter("category", category)}
-                className="text-blue-600 focus:ring-blue-500 border-gray-300"
+                checked={!currentCategory}
+                onChange={() => updateFilter("category", null)}
+                className="peer appearance-none h-5 w-5 rounded-full border-2 border-slate-600 checked:border-brand-emerald transition-all"
               />
-              <span className={`text-sm ${currentCategory === category ? 'text-gray-900 font-medium' : 'text-gray-600 group-hover:text-gray-900'}`}>{category}</span>
+              <div className="absolute h-2.5 w-2.5 rounded-full bg-brand-emerald opacity-0 peer-checked:opacity-100 transition-opacity"></div>
+            </div>
+            <span className={`text-sm transition-colors ${!currentCategory ? 'text-white font-bold' : 'text-slate-400 group-hover:text-slate-200'}`}>All Categories</span>
+          </label>
+          {CATEGORIES.map((category) => (
+            <label key={category} className="flex items-center space-x-3 cursor-pointer group">
+              <div className="relative flex items-center justify-center">
+                <input
+                  type="radio"
+                  name="category"
+                  checked={currentCategory === category}
+                  onChange={() => updateFilter("category", category)}
+                  className="peer appearance-none h-5 w-5 rounded-full border-2 border-slate-600 checked:border-brand-emerald transition-all"
+                />
+                <div className="absolute h-2.5 w-2.5 rounded-full bg-brand-emerald opacity-0 peer-checked:opacity-100 transition-opacity"></div>
+              </div>
+              <span className={`text-sm transition-colors ${currentCategory === category ? 'text-white font-bold' : 'text-slate-400 group-hover:text-slate-200'}`}>{category}</span>
             </label>
           ))}
-        </div>
-      </div>
-
-      <div>
-        <h3 className="font-semibold text-gray-900 mb-4">Price</h3>
-        <div className="space-y-2">
-          <label className="flex items-center space-x-2 cursor-pointer group">
-            <input
-              type="radio"
-              name="price"
-              checked={!currentPrice}
-              onChange={() => updateFilter("price", null)}
-              className="text-blue-600 focus:ring-blue-500 border-gray-300"
-            />
-            <span className={`text-sm ${!currentPrice ? 'text-gray-900 font-medium' : 'text-gray-600 group-hover:text-gray-900'}`}>Any Price</span>
-          </label>
-          <label className="flex items-center space-x-2 cursor-pointer group">
-            <input
-              type="radio"
-              name="price"
-              checked={currentPrice === "free"}
-              onChange={() => updateFilter("price", "free")}
-              className="text-blue-600 focus:ring-blue-500 border-gray-300"
-            />
-            <span className={`text-sm ${currentPrice === 'free' ? 'text-gray-900 font-medium' : 'text-gray-600 group-hover:text-gray-900'}`}>Free only</span>
-          </label>
-          <label className="flex items-center space-x-2 cursor-pointer group">
-            <input
-              type="radio"
-              name="price"
-              checked={currentPrice === "paid"}
-              onChange={() => updateFilter("price", "paid")}
-              className="text-blue-600 focus:ring-blue-500 border-gray-300"
-            />
-            <span className={`text-sm ${currentPrice === 'paid' ? 'text-gray-900 font-medium' : 'text-gray-600 group-hover:text-gray-900'}`}>Paid only</span>
-          </label>
         </div>
       </div>
     </div>

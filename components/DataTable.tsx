@@ -9,27 +9,31 @@ export default function DataTable({ data, fields }: DataTableProps) {
   }
 
   return (
-    <div className="overflow-x-auto border border-gray-200 rounded-lg">
-      <table className="min-w-full divide-y divide-gray-200">
-        <thead className="bg-gray-50">
+    <div className="overflow-x-auto border border-white/5 rounded-xl shadow-2xl">
+      <table className="min-w-full divide-y divide-white/5">
+        <thead className="bg-slate-900/80 backdrop-blur-sm">
           <tr>
             {fields.map((field) => (
               <th
                 key={field}
                 scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                className="px-6 py-4 text-left text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]"
               >
                 {field}
               </th>
             ))}
           </tr>
         </thead>
-        <tbody className="bg-white divide-y divide-gray-200">
+        <tbody className="divide-y divide-white/5 bg-slate-900/20">
           {data.map((row, idx) => (
-            <tr key={idx}>
+            <tr key={idx} className="hover:bg-brand-emerald/5 transition-colors group">
               {fields.map((field) => (
-                <td key={`${idx}-${field}`} className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  {row[field] !== undefined ? String(row[field]) : "-"}
+                <td key={`${idx}-${field}`} className="px-6 py-4 whitespace-nowrap text-sm text-slate-300 group-hover:text-white transition-colors">
+                  {row[field] !== undefined ? (
+                    typeof row[field] === 'number' ? (
+                      <span className="font-mono tabular-nums">{row[field]}</span>
+                    ) : String(row[field])
+                  ) : "-"}
                 </td>
               ))}
             </tr>

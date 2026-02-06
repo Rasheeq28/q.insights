@@ -91,82 +91,133 @@ export default function DatasetDetailClient({ dataset }: DatasetDetailClientProp
     const previewData = isDsex ? realData : (dataset.previewData || []);
 
     return (
-        <main className="min-h-screen bg-slate-50 py-12">
-            <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <main className="min-h-screen bg-brand-slate-dark pt-24 pb-20">
+            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
                 {/* Breadcrumb */}
-                <Link href="/datasets" className="text-sm text-blue-600 hover:underline mb-6 inline-block">
-                    &larr; Back to Datasets
+                <Link href="/datasets" className="text-sm text-brand-emerald hover:text-brand-emerald-hover mb-8 inline-flex items-center gap-2 transition-colors font-semibold">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clipRule="evenodd" />
+                    </svg>
+                    Back to Datasets
                 </Link>
 
-                {/* Header */}
-                <div className="bg-white rounded-xl p-8 shadow-sm border border-gray-200 mb-8">
-                    <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
-                        <div>
-                            <h1 className="text-3xl font-bold text-gray-900 mb-2">{dataset.title}</h1>
-                            <div className="flex flex-wrap gap-4 text-sm text-gray-600">
-                                <span className="bg-blue-50 text-blue-700 px-3 py-1 rounded-full font-medium">{dataset.source}</span>
-                                <span>Updated: {dataset.updatedAt}</span>
-                                <span className="font-semibold text-gray-900">{dataset.price === 0 ? "Free" : `$${dataset.price}`}</span>
+                {/* Header Card */}
+                <div className="bg-slate-800/40 backdrop-blur-sm rounded-2xl p-8 lg:p-12 border border-white/5 mb-10 relative overflow-hidden">
+                    <div className="flex flex-col md:flex-row justify-between items-start gap-8 mb-10 relative z-10">
+                        <div className="max-w-2xl">
+                            <h1 className="text-4xl md:text-5xl font-black text-white mb-6 tracking-tight leading-tight">{dataset.title}</h1>
+                            <div className="flex flex-wrap gap-4 items-center">
+                                <span className="text-slate-400 text-sm font-medium">Updated: {dataset.updatedAt}</span>
                             </div>
                         </div>
-                        <div className="mt-4 md:mt-0 flex flex-col gap-4">
+
+                        <div className="flex flex-col gap-4 w-full md:w-auto">
                             {/* Date Range Controls */}
                             {isDsex && (
-                                <div className="flex items-center gap-2 text-sm bg-gray-50 p-2 rounded-lg border border-gray-200">
-                                    <div className="flex flex-col">
-                                        <label className="text-xs text-gray-500 font-semibold mb-1">From</label>
-                                        <input
-                                            type="date"
-                                            className="border border-gray-300 rounded px-2 py-1 text-gray-700 focus:outline-none focus:border-blue-500"
-                                            min={minDate}
-                                            max={maxDate}
-                                            value={startDate}
-                                            onChange={(e) => setStartDate(e.target.value)}
-                                        />
+                                <div className="bg-slate-900/50 p-6 rounded-2xl border border-white/5 shadow-inner">
+                                    <div className="flex justify-between items-center mb-4">
+                                        <div className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Date Range</div>
+                                        <div className="flex gap-1.5">
+                                            {[
+                                                { label: '7D', days: 7 },
+                                                { label: '30D', days: 30 },
+                                                { label: '1Y', days: 365 },
+                                                { label: 'MAX', days: null }
+                                            ].map((range) => (
+                                                <button
+                                                    key={range.label}
+                                                    onClick={() => {
+                                                        const end = new Date(maxDate);
+                                                        setEndDate(maxDate);
+                                                        if (range.days) {
+                                                            const start = new Date(end);
+                                                            start.setDate(start.getDate() - range.days);
+                                                            setStartDate(start.toISOString().split('T')[0]);
+                                                        } else {
+                                                            setStartDate(minDate);
+                                                        }
+                                                    }}
+                                                    className="px-2 py-1 bg-slate-800 hover:bg-brand-emerald/20 text-slate-400 hover:text-brand-emerald rounded text-[10px] font-bold border border-white/5 transition-all"
+                                                >
+                                                    {range.label}
+                                                </button>
+                                            ))}
+                                        </div>
                                     </div>
-                                    <span className="text-gray-400 mt-4">-</span>
-                                    <div className="flex flex-col">
-                                        <label className="text-xs text-gray-500 font-semibold mb-1">To</label>
-                                        <input
-                                            type="date"
-                                            className="border border-gray-300 rounded px-2 py-1 text-gray-700 focus:outline-none focus:border-blue-500"
-                                            min={minDate}
-                                            max={maxDate}
-                                            value={endDate}
-                                            onChange={(e) => setEndDate(e.target.value)}
-                                        />
+                                    <div className="flex items-center gap-3">
+                                        <div className="flex flex-col gap-1.5 relative">
+                                            <input
+                                                type="date"
+                                                className="bg-slate-950 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:ring-2 focus:ring-brand-emerald/50 transition-all font-medium color-scheme-dark"
+                                                min={minDate}
+                                                max={maxDate}
+                                                value={startDate}
+                                                onChange={(e) => setStartDate(e.target.value)}
+                                            />
+                                        </div>
+                                        <span className="text-slate-700">-</span>
+                                        <div className="flex flex-col gap-1.5 relative">
+                                            <input
+                                                type="date"
+                                                className="bg-slate-950 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:ring-2 focus:ring-brand-emerald/50 transition-all font-medium color-scheme-dark"
+                                                min={minDate}
+                                                max={maxDate}
+                                                value={endDate}
+                                                onChange={(e) => setEndDate(e.target.value)}
+                                            />
+                                        </div>
                                     </div>
+                                    <style jsx>{`
+                                        .color-scheme-dark {
+                                            color-scheme: dark;
+                                        }
+                                    `}</style>
                                 </div>
                             )}
                             <ExportButton slug={dataset.slug} fields={selectedFields} startDate={startDate} endDate={endDate} />
                         </div>
                     </div>
 
-                    <p className="text-gray-700 text-lg leading-relaxed max-w-3xl">
+                    <p className="text-slate-300 text-lg leading-relaxed max-w-4xl font-medium opacity-90 relative z-10">
                         {dataset.description}
                     </p>
                 </div>
 
                 {/* Data Preview Section */}
-                <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                    <div className="p-6 border-b border-gray-200">
-                        <h2 className="text-xl font-bold text-gray-900 mb-4">
-                            Data Preview
-                            {loading && <span className="ml-2 text-sm font-normal text-gray-500">(Refreshing...)</span>}
-                        </h2>
+                <div className="bg-slate-800/40 backdrop-blur-sm rounded-2xl border border-white/5 overflow-hidden shadow-2xl">
+                    <div className="p-8 lg:p-10 border-b border-white/5">
+                        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-10">
+                            <div>
+                                <h2 className="text-2xl font-black text-white tracking-tight flex items-center gap-3">
+                                    Data Preview
+                                    {loading && (
+                                        <div className="flex items-center gap-2">
+                                            <div className="h-2 w-2 bg-brand-emerald rounded-full animate-ping"></div>
+                                            <span className="text-xs font-bold text-slate-500 uppercase tracking-widest">Updating...</span>
+                                        </div>
+                                    )}
+                                </h2>
+                                <p className="text-slate-400 text-sm mt-1">Showing a subset of real records</p>
+                            </div>
+
+                            <div className="flex items-center gap-2 bg-slate-950/50 px-4 py-2 rounded-full border border-white/5">
+                                <span className="h-2 w-2 bg-brand-emerald rounded-full"></span>
+                                <span className="text-[10px] font-black text-slate-300 uppercase tracking-widest">Live Sync Enabled</span>
+                            </div>
+                        </div>
 
                         {/* Field Selector */}
-                        <div className="mb-6">
-                            <span className="text-sm font-semibold text-gray-700 block mb-2">Select Columns:</span>
-                            <div className="flex flex-wrap gap-2 max-h-32 overflow-y-auto">
+                        <div>
+                            <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest block mb-4">Column Selection</span>
+                            <div className="flex flex-wrap gap-2.5">
                                 {allFields.map((field) => (
                                     <button
                                         key={field}
                                         onClick={() => toggleField(field)}
-                                        className={`px-3 py-1 rounded-full text-xs font-medium border transition-colors ${selectedFields.includes(field)
-                                            ? "bg-blue-100 text-blue-700 border-blue-200"
-                                            : "bg-gray-50 text-gray-500 border-gray-200 hover:bg-gray-100"
+                                        className={`px-4 py-2 rounded-lg text-xs font-bold border transition-all active:scale-95 ${selectedFields.includes(field)
+                                            ? "bg-brand-emerald/20 text-brand-emerald border-brand-emerald/30 shadow-[0_0_15px_rgba(16,185,129,0.1)]"
+                                            : "bg-slate-900/50 text-slate-500 border-white/5 hover:border-slate-600 hover:text-slate-300"
                                             }`}
                                     >
                                         {field}
@@ -176,16 +227,18 @@ export default function DatasetDetailClient({ dataset }: DatasetDetailClientProp
                         </div>
                     </div>
 
-                    <div className="p-0 relative min-h-[200px]">
+                    <div className="p-0 relative min-h-[300px] bg-slate-950/20">
                         {loading && previewData.length === 0 ? (
-                            <div className="flex justify-center items-center h-40 text-gray-500">Loading data...</div>
+                            <div className="flex justify-center items-center h-60 text-slate-500 font-bold uppercase tracking-widest text-sm animate-pulse">Initializing Data Stream...</div>
                         ) : (
                             <DataTable data={previewData} fields={selectedFields} />
                         )}
                     </div>
 
-                    <div className="p-4 bg-gray-50 border-t border-gray-200 text-center text-sm text-gray-500">
-                        Showing top {previewData.length} records • Sign in to export full dataset
+                    <div className="p-6 bg-slate-950/40 border-t border-white/5 text-center">
+                        <p className="text-slate-500 text-xs font-bold tracking-widest uppercase">
+                            Showing top {previewData.length} indexed records • Sign in to export full time-series
+                        </p>
                     </div>
                 </div>
 
