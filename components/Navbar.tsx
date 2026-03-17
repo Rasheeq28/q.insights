@@ -23,10 +23,16 @@ export default function Navbar() {
                 href="#"
                 className="text-slate-400 hover:text-white transition-colors border-transparent inline-flex items-center px-1 pt-1 text-sm font-semibold"
               >
-                Documentation
+                API
               </Link>
               <Link
                 href="#"
+                className="text-slate-400 hover:text-white transition-colors border-transparent inline-flex items-center px-1 pt-1 text-sm font-semibold"
+              >
+                Scrapers
+              </Link>
+              <Link
+                href="/pricing"
                 className="text-slate-400 hover:text-white transition-colors border-transparent inline-flex items-center px-1 pt-1 text-sm font-semibold"
               >
                 Pricing
@@ -34,18 +40,7 @@ export default function Navbar() {
             </div>
           </div>
           <div className="flex items-center gap-4">
-            <Link
-              href="/signin"
-              className="text-slate-400 hover:text-white transition-colors px-4 py-2 text-sm font-semibold"
-            >
-              Sign In
-            </Link>
-            <Link
-              href="/signin"
-              className="inline-flex items-center justify-center px-6 py-2.5 border border-transparent text-sm font-bold rounded-lg shadow-[0_0_20px_rgba(16,185,129,0.3)] text-slate-950 bg-brand-emerald hover:bg-brand-emerald-hover hover:scale-105 active:scale-95 transition-all focus:outline-none"
-            >
-              Get Started
-            </Link>
+            {/* Auth links removed per MVP brief */}
           </div>
         </div>
       </div>

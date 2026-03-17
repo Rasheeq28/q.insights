@@ -102,86 +102,43 @@ export default function DatasetDetailClient({ dataset }: DatasetDetailClientProp
                     Back to Datasets
                 </Link>
 
-                {/* Header Card */}
-                <div className="bg-slate-800/40 backdrop-blur-sm rounded-2xl p-8 lg:p-12 border border-white/5 mb-10 relative overflow-hidden">
-                    <div className="flex flex-col md:flex-row justify-between items-start gap-8 mb-10 relative z-10">
-                        <div className="max-w-2xl">
-                            <h1 className="text-4xl md:text-5xl font-black text-white mb-6 tracking-tight leading-tight">{dataset.title}</h1>
-                            <div className="flex flex-wrap gap-4 items-center">
-                                <span className="text-slate-400 text-sm font-medium">Updated: {dataset.updatedAt}</span>
-                            </div>
-                        </div>
-
-                        <div className="flex flex-col gap-4 w-full md:w-auto">
-                            {/* Date Range Controls */}
-                            {isDsex && (
-                                <div className="bg-slate-900/50 p-6 rounded-2xl border border-white/5 shadow-inner">
-                                    <div className="flex justify-between items-center mb-4">
-                                        <div className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Date Range</div>
-                                        <div className="flex gap-1.5">
-                                            {[
-                                                { label: '7D', days: 7 },
-                                                { label: '30D', days: 30 },
-                                                { label: '1Y', days: 365 },
-                                                { label: 'MAX', days: null }
-                                            ].map((range) => (
-                                                <button
-                                                    key={range.label}
-                                                    onClick={() => {
-                                                        const end = new Date(maxDate);
-                                                        setEndDate(maxDate);
-                                                        if (range.days) {
-                                                            const start = new Date(end);
-                                                            start.setDate(start.getDate() - range.days);
-                                                            setStartDate(start.toISOString().split('T')[0]);
-                                                        } else {
-                                                            setStartDate(minDate);
-                                                        }
-                                                    }}
-                                                    className="px-2 py-1 bg-slate-800 hover:bg-brand-emerald/20 text-slate-400 hover:text-brand-emerald rounded text-[10px] font-bold border border-white/5 transition-all"
-                                                >
-                                                    {range.label}
-                                                </button>
-                                            ))}
-                                        </div>
-                                    </div>
-                                    <div className="flex items-center gap-3">
-                                        <div className="flex flex-col gap-1.5 relative">
-                                            <input
-                                                type="date"
-                                                className="bg-slate-950 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:ring-2 focus:ring-brand-emerald/50 transition-all font-medium color-scheme-dark"
-                                                min={minDate}
-                                                max={maxDate}
-                                                value={startDate}
-                                                onChange={(e) => setStartDate(e.target.value)}
-                                            />
-                                        </div>
-                                        <span className="text-slate-700">-</span>
-                                        <div className="flex flex-col gap-1.5 relative">
-                                            <input
-                                                type="date"
-                                                className="bg-slate-950 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:ring-2 focus:ring-brand-emerald/50 transition-all font-medium color-scheme-dark"
-                                                min={minDate}
-                                                max={maxDate}
-                                                value={endDate}
-                                                onChange={(e) => setEndDate(e.target.value)}
-                                            />
-                                        </div>
-                                    </div>
-                                    <style jsx>{`
-                                        .color-scheme-dark {
-                                            color-scheme: dark;
-                                        }
-                                    `}</style>
-                                </div>
-                            )}
-                            <ExportButton slug={dataset.slug} fields={selectedFields} startDate={startDate} endDate={endDate} />
+                <div className="flex flex-col lg:flex-row gap-12 mb-12">
+                    {/* Header Section */}
+                    <div className="flex-1 order-2 lg:order-1">
+                        <h1 className="text-4xl md:text-5xl font-black text-white mb-6 tracking-tight leading-tight">{dataset.title}</h1>
+                        <p className="text-xl text-slate-400 max-w-3xl mb-8 leading-relaxed">
+                            {dataset.description}
+                        </p>
+                        <div className="flex flex-wrap gap-4 items-center">
+                            <span className="px-3 py-1 rounded-full border border-brand-emerald text-brand-emerald text-xs font-bold uppercase tracking-wider">Verified</span>
+                            <span className="px-3 py-1 rounded-full border border-white/20 text-slate-300 bg-slate-800 text-xs font-bold uppercase tracking-wider">CSV / JSON</span>
+                            <span className="px-3 py-1 rounded-full border border-white/20 text-slate-300 bg-slate-800 text-xs font-bold uppercase tracking-wider">1.2 GB</span>
                         </div>
                     </div>
 
-                    <p className="text-slate-300 text-lg leading-relaxed max-w-4xl font-medium opacity-90 relative z-10">
-                        {dataset.description}
-                    </p>
+                    <div className="w-full lg:w-[360px] flex-shrink-0 order-1 lg:order-2">
+                        {/* Download & API Trigger */}
+                        <div className="bg-[#0a0f1a] rounded-xl border border-white/5 overflow-hidden sticky top-28 shadow-xl">
+                            <div className="p-5 space-y-4">
+                                <ExportButton slug={dataset.slug} fields={selectedFields} startDate={startDate} endDate={endDate} />
+                                <Link 
+                                    href="/pricing"
+                                    className="w-full px-6 py-3.5 rounded-xl font-bold text-sm uppercase tracking-wide transition-all shadow-md bg-white/5 text-slate-300 hover:bg-white/10 hover:text-white flex items-center justify-center gap-2 border border-white/5"
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-brand-emerald" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                                    </svg>
+                                    Get API Access
+                                </Link>
+                            </div>
+                            <div className="p-4 flex items-center justify-center gap-3 text-sm text-slate-400 bg-slate-900/50 border-t border-white/5">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-brand-emerald opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                Source: {dataset.source}
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 {/* Data Preview Section */}

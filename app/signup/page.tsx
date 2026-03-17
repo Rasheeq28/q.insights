@@ -1,22 +1,27 @@
 "use client";
 
-import { useState, Suspense } from "react";
+import { useState, Suspense, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import BrandLogo from "@/components/BrandLogo";
 
-function SignInForm() {
+function SignUpForm() {
     const searchParams = useSearchParams();
-    const router = useRouter();
     const next = searchParams.get("next") || "/datasets";
+    const initialEmail = searchParams.get("email") || "";
 
-    const [loading, setLoading] = useState(false);
-    const [email, setEmail] = useState("");
+    const [email, setEmail] = useState(initialEmail);
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
     const [message, setMessage] = useState("");
 
-    const handleMagicLinkSignIn = async (e: React.FormEvent) => {
+    useEffect(() => {
+        if (initialEmail) {
+            setEmail(initialEmail);
+        }
+    }, [initialEmail]);
+
+    const handleMagicLinkSignUp = async (e: React.FormEvent) => {
         e.preventDefault();
         
         if (!email) {
@@ -42,18 +47,15 @@ function SignInForm() {
                 email,
                 options: {
                     emailRedirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(next)}`,
-                    shouldCreateUser: false, // Prevent auto-registration of unverified emails
+                    shouldCreateUser: true, // Allow registration of new users
                 },
             });
 
             if (error) {
                 setStatus("error");
-                // If the error is regarding a non-existent user, provide a clear message and route them to signup
-                if (error.message.toLowerCase().includes("user not found") || error.message.toLowerCase().includes("signups not allowed") || error.message.toLowerCase().includes("invalid login")) {
-                     setMessage("Account not found. Redirecting to Sign Up...");
-                     setTimeout(() => {
-                         router.push(`/signup?email=${encodeURIComponent(email)}`);
-                     }, 1500);
+                // Provide clearer messaging for common errors
+                if (error.message.toLowerCase().includes("over limit") || error.message.toLowerCase().includes("rate limit")) {
+                     setMessage("Please wait a moment before requesting another link.");
                 } else {
                      setMessage(error.message);
                 }
@@ -86,7 +88,7 @@ function SignInForm() {
                        onClick={() => { setStatus("idle"); setEmail(""); }}
                        className="text-sm text-slate-400 hover:text-white transition-colors"
                    >
-                       Wrong email? Try again.
+                       Didn't receive it? Try again.
                    </button>
                 </div>
             </div>
@@ -95,7 +97,7 @@ function SignInForm() {
 
     return (
         <div className="bg-slate-800/40 backdrop-blur-md py-10 px-6 shadow-2xl rounded-2xl border border-white/5 sm:px-12 w-full">
-            <form onSubmit={handleMagicLinkSignIn} className="space-y-6">
+            <form onSubmit={handleMagicLinkSignUp} className="space-y-6">
                 <div>
                      <label htmlFor="email" className="block text-sm font-medium text-slate-300 mb-2">
                         Email Address
@@ -113,28 +115,33 @@ function SignInForm() {
                     />
                 </div>
 
-                <button
-                    type="submit"
-                    disabled={status === "loading"}
-                    className={`w-full flex items-center justify-center gap-3 py-3.5 px-4 border border-transparent rounded-xl bg-brand-emerald text-slate-900 font-bold hover:bg-emerald-400 transition-all active:scale-95 shadow-[0_0_15px_rgba(16,185,129,0.3)]
-                  ${status === "loading" ? 'opacity-75 cursor-wait shadow-none' : 'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-emerald focus:ring-offset-slate-900'}
-                `}
-                >
-                    {status === "loading" ? (
-                        <>
-                            <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-slate-900"></div>
-                            <span>Sending Link...</span>
-                        </>
-                    ) : (
-                        <span>Log in</span>
-                    )}
-                </button>
+                <div className="pt-2">
+                    <button
+                        type="submit"
+                        disabled={status === "loading"}
+                        className={`w-full flex items-center justify-center gap-3 py-3.5 px-4 border border-transparent rounded-xl bg-brand-emerald text-slate-900 font-bold hover:bg-emerald-400 transition-all active:scale-95 shadow-[0_0_15px_rgba(16,185,129,0.3)]
+                      ${status === "loading" ? 'opacity-75 cursor-wait shadow-none' : 'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-emerald focus:ring-offset-slate-900'}
+                    `}
+                    >
+                        {status === "loading" ? (
+                            <>
+                                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-slate-900"></div>
+                                <span>Sending Link...</span>
+                            </>
+                        ) : (
+                            <span>Create account</span>
+                        )}
+                    </button>
+                    <p className="text-xs text-slate-500 mt-4 text-center">
+                        By signing up, you agree to our Terms of Service and Privacy Policy.
+                    </p>
+                </div>
             </form>
 
-            <div className="mt-6 text-center text-sm text-slate-400">
-                Don't have an account?{" "}
-                <Link href="/signup" className="text-brand-emerald hover:text-emerald-400 font-bold transition-colors">
-                    Sign up
+            <div className="mt-8 text-center text-sm text-slate-400 pt-6 border-t border-white/10">
+                Already have an account?{" "}
+                <Link href="/signin" className="text-brand-emerald hover:text-emerald-400 font-bold transition-colors">
+                    Log in
                 </Link>
             </div>
 
@@ -147,7 +154,7 @@ function SignInForm() {
     );
 }
 
-export default function SignInPage() {
+export default function SignUpPage() {
     return (
         <main className="min-h-screen bg-brand-slate-dark flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
             {/* Background Glow */}
@@ -158,10 +165,10 @@ export default function SignInPage() {
                     <BrandLogo size="lg" />
                 </div>
                 <h2 className="text-4xl font-black text-white mb-3 tracking-tight">
-                    Welcome Back
+                    Create an account
                 </h2>
                 <p className="text-slate-400 font-medium mb-10">
-                    Log in securely to access your datasets.
+                    Enter your email to get started with Q.Insights.
                 </p>
             </div>
 
@@ -169,10 +176,10 @@ export default function SignInPage() {
                 <Suspense fallback={
                     <div className="bg-slate-800/40 backdrop-blur-md py-20 px-6 shadow-2xl rounded-2xl border border-white/5 text-center">
                         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-emerald mx-auto mb-4"></div>
-                        <span className="text-slate-500 font-bold uppercase tracking-widest text-xs">Initializing Secure Link...</span>
+                        <span className="text-slate-500 font-bold uppercase tracking-widest text-xs">Loading Sign Up...</span>
                     </div>
                 }>
-                    <SignInForm />
+                    <SignUpForm />
                 </Suspense>
 
                 <p className="mt-8 text-center text-sm">

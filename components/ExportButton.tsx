@@ -3,6 +3,7 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { supabase } from "@/lib/supabase";
+import SignupModal from "./SignupModal";
 
 interface ExportButtonProps {
   slug?: string;
@@ -15,6 +16,7 @@ export default function ExportButton({ slug, fields = [], startDate, endDate }: 
   const router = useRouter();
   const searchParams = useSearchParams();
   const [loading, setLoading] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleExport = async () => {
     // Check if user is authenticated
@@ -24,14 +26,14 @@ export default function ExportButton({ slug, fields = [], startDate, endDate }: 
 
       if (error || !data.session) {
         console.log("No active session found:", error);
-        router.push("/signin");
+        setIsModalOpen(true);
         return;
       }
       session = data.session;
       console.log("Exporting for user:", session.user.email);
     } catch (err) {
       console.error("Auth check failed:", err);
-      router.push("/signin");
+      setIsModalOpen(true);
       return;
     }
 
@@ -56,8 +58,8 @@ export default function ExportButton({ slug, fields = [], startDate, endDate }: 
       });
 
       if (response.status === 401) {
-        console.warn("Session expired or unauthorized, redirecting to signin...");
-        router.push("/signin");
+        console.warn("Session expired or unauthorized, opening modal...");
+        setIsModalOpen(true);
         return;
       }
 
@@ -87,15 +89,29 @@ export default function ExportButton({ slug, fields = [], startDate, endDate }: 
   };
 
   return (
-    <button
-      onClick={handleExport}
-      disabled={loading}
-      className={`
-         w-full sm:w-auto px-8 py-3 rounded-lg font-semibold text-white shadow-md transition-all
-         ${loading ? "bg-blue-400 cursor-wait" : "bg-blue-600 hover:bg-blue-700 hover:shadow-lg transform hover:-translate-y-0.5"}
-      `}
-    >
-      {loading ? "Preparing Download..." : "Export CSV"}
-    </button>
+    <>
+      <button
+        onClick={handleExport}
+        disabled={loading}
+        className={`
+          w-full px-6 py-3.5 rounded-xl font-black text-sm uppercase tracking-wide transition-all shadow-md
+          ${loading 
+            ? "bg-slate-700 text-slate-400 cursor-wait" 
+            : "bg-brand-emerald text-slate-950 hover:bg-brand-emerald-hover hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(204,255,0,0.3)]"}
+        `}
+      >
+        <div className="flex items-center justify-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" />
+          </svg>
+          {loading ? "Preparing..." : "Download CSV (Free up to 1000 rows)"}
+        </div>
+      </button>
+
+      <SignupModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+      />
+    </>
   );
 }
