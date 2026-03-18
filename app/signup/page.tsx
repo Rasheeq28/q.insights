@@ -43,6 +43,22 @@ function SignUpForm() {
         }
 
         try {
+            // Check if user already exists
+            const checkRes = await fetch('/api/auth/check-user', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email })
+            });
+
+            if (checkRes.ok) {
+                const { exists } = await checkRes.json();
+                if (exists) {
+                    setStatus("error");
+                    setMessage("already logged in");
+                    return;
+                }
+            }
+
             const { error } = await supabase.auth.signInWithOtp({
                 email,
                 options: {
@@ -61,7 +77,7 @@ function SignUpForm() {
                 }
             } else {
                 setStatus("success");
-                setMessage(`Check confirmation mail sent to ${email}`);
+                setMessage(`magic link sent at ${email}`);
             }
         } catch (err: any) {
             setStatus("error");

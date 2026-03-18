@@ -40,7 +40,12 @@ export default function Navbar() {
             </div>
           </div>
           <div className="flex items-center gap-4">
-            {/* Auth links removed per MVP brief */}
+            <Link
+              href="/signup"
+              className="bg-brand-emerald hover:bg-emerald-400 text-slate-900 px-4 py-2 font-bold rounded-lg transition-colors"
+            >
+              Sign Up
+            </Link>
           </div>
         </div>
       </div>

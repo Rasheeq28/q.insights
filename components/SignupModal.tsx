@@ -27,6 +27,21 @@ export default function SignupModal({ isOpen, onClose }: SignupModalProps) {
         setMessage(null);
 
         try {
+            const checkRes = await fetch('/api/auth/check-user', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email })
+            });
+
+            if (checkRes.ok) {
+                const { exists } = await checkRes.json();
+                if (exists) {
+                    setMessage({ text: 'already logged in', type: 'error' });
+                    setLoading(false);
+                    return;
+                }
+            }
+
             const { error } = await supabase.auth.signInWithOtp({
                 email,
                 options: {
@@ -37,7 +52,7 @@ export default function SignupModal({ isOpen, onClose }: SignupModalProps) {
             if (error) {
                 setMessage({ text: error.message, type: 'error' });
             } else {
-                setMessage({ text: 'Check your email for the login link!', type: 'success' });
+                setMessage({ text: `magic link sent at ${email}`, type: 'success' });
             }
         } catch (err: any) {
             setMessage({ text: err.message || 'Something went wrong.', type: 'error' });
