@@ -148,6 +148,11 @@ export async function GET(request: Request) {
                                 if (batchData.length < batchSize) {
                                     hasMore = false;
                                 }
+
+                                // Restrict total download to the most recent 1000 rows
+                                if (offset >= 1000) {
+                                    hasMore = false;
+                                }
                             }
                             controller.close();
                         } catch (err) {
