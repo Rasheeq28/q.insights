@@ -74,7 +74,7 @@ function ApiAccessPanel({ slug }: { slug: string }) {
         setSelectedCompanies(prev => prev.filter(c => filtered.includes(c)));
     }, [selectedSectors, allCompanies, mappings]);
 
-    async function generateToken() {
+    async function generateToken(targetPlatform: string = platform) {
         setLoading(true);
         setError("");
         try {
@@ -90,7 +90,7 @@ function ApiAccessPanel({ slug }: { slug: string }) {
                     sectors: selectedSectors,
                     start,
                     end,
-                    platform, // Inject the selected platform
+                    platform: targetPlatform, // Inject the exact clicked platform
                 }
             };
             const res = await fetch("/api/generate-token", {
@@ -234,7 +234,7 @@ function ApiAccessPanel({ slug }: { slug: string }) {
                                 key={key}
                                 onClick={() => {
                                     setPlatform(key as any);
-                                    generateToken();
+                                    generateToken(key);
                                 }}
                                 disabled={loading}
                                 className="flex items-center gap-4 p-4 rounded-xl bg-white/[0.03] border border-white/5 hover:border-brand-emerald/40 hover:bg-brand-emerald/5 transition-all text-left group"

@@ -172,8 +172,8 @@ export default function DashboardPage() {
                           </div>
                           
                           <div className="flex flex-wrap gap-x-6 gap-y-2 text-xs text-slate-500 font-medium">
-                            <p>Created: <span className="text-slate-300">{createdDate.toLocaleDateString()}</span></p>
-                            <p>Expires: <span className="text-amber-400">{expiryDate.toLocaleDateString()}</span></p>
+                            <p>Created: <span className="text-slate-300">{createdDate.toLocaleString("en-US", { month: "short", day: "numeric", year: "numeric", hour: "2-digit", minute: "2-digit" })}</span></p>
+                            <p>Expires: <span className="text-amber-400">{expiryDate.toLocaleString("en-US", { month: "short", day: "numeric", year: "numeric", hour: "2-digit", minute: "2-digit" })}</span></p>
                             
                             {token.filters && Object.keys(token.filters).length > 0 && (
                               <p className="border-l border-white/10 pl-6">
