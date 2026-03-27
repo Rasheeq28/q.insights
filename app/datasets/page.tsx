@@ -6,9 +6,9 @@ export default function DatasetsPage() {
         <main className="min-h-screen bg-brand-slate-dark pt-10 pb-20">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="mb-12">
-                    <h1 className="text-4xl font-extrabold text-white mb-4 tracking-tight">Datasets Catalog</h1>
+                    <h1 className="text-4xl font-extrabold text-white mb-4 tracking-tight">Data Catalog</h1>
                     <p className="text-xl text-slate-400 max-w-3xl">
-                        Fuel your AI models with high-precision curated data from across the globe.
+                        Explore curated datasets. From e-commerce and real estate to market intelligence and web-wide data.
                     </p>
                 </div>
 

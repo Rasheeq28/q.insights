@@ -11,21 +11,27 @@ export async function GET() {
 
         if (sectorError) throw sectorError;
 
-        // Fetch unique trading codes
+        // Fetch unique trading codes (with their sectors for mapping)
         const { data: codesData, error: codeError } = await supabase
             .from("dsex_mapper")
-            .select("trading_code")
+            .select("trading_code, sector")
             .order("trading_code", { ascending: true });
 
         if (codeError) throw codeError;
 
-        // Process to get distinct values (in case DB isn't normalized unique)
+        // Process to get distinct values
         const sectors = Array.from(new Set(sectorsData?.map((item) => item.sector).filter(Boolean)));
         const tradingCodes = codesData?.map((item) => item.trading_code) || [];
+        
+        // Build mappings for dynamic filtering
+        const mappings = codesData?.map(item => ({
+            code: item.trading_code,
+            sector: item.sector
+        })) || [];
 
-        return NextResponse.json({ sectors, tradingCodes });
+        return NextResponse.json({ sectors, tradingCodes, mappings });
     } catch (error: any) {
         console.error("Filter API Error:", error.message);
-        return NextResponse.json({ sectors: [], tradingCodes: [] }, { status: 500 });
+        return NextResponse.json({ sectors: [], tradingCodes: [], mappings: [] }, { status: 500 });
     }
 }

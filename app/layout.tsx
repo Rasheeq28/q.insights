@@ -7,8 +7,8 @@ const inter = Inter({ subsets: ["latin"] });
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Q.Labs - Premium Dataset Discovery",
-  description: "Discover and export high-quality structured datasets.",
+  title: "qlabs | High-Quality Curated Datasets. Build apps. Train AI. Explore insights.",
+  description: "Access curated datasets that power your vision. From e-commerce trends and real estate listings to market intelligence and web data. No scraping required.",
 };
 
 // Force rebuild triggered at 22:35
@@ -42,7 +42,7 @@ export default function RootLayout({
             </Link>
 
             <div className="text-slate-500 text-xs">
-              &copy; {new Date().getFullYear()} Platform. All rights reserved.
+              &copy; {new Date().getFullYear()} qlabs. All rights reserved.
             </div>
 
             <div className="flex gap-6">
