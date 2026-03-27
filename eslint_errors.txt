@@ -1,0 +1,94 @@
+﻿
+> qlabs@0.1.0 lint
+> eslint
+
+
+C:\Users\rashe\qlabs\app\api\auth\check-user\route.ts
+  51:19  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\rashe\qlabs\app\api\datasets\[slug]\route.ts
+   16:15  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  182:32  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\rashe\qlabs\app\api\datasets\route.ts
+   72:49  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  110:77  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  121:57  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  140:75  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  185:55  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  196:25  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\rashe\qlabs\app\api\filters\route.ts
+  33:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\rashe\qlabs\app\auth\callback\page.tsx
+  56:27  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\rashe\qlabs\app\dashboard\page.tsx
+  11:12  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\rashe\qlabs\app\datasets\[slug]\DatasetDetailClient.tsx
+  236:56  error    Unexpected any. Specify a different type      @typescript-eslint/no-explicit-any
+  338:46  error    Unexpected any. Specify a different type      @typescript-eslint/no-explicit-any
+  346:12  warning  'minDate' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  347:12  warning  'maxDate' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\rashe\qlabs\app\layout.tsx
+  16:8   warning  'BrandLogo' is defined but never used                                                                                                                                                                                                                                                    @typescript-eslint/no-unused-vars
+  36:15  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+C:\Users\rashe\qlabs\app\page.tsx
+  2:8  warning  'SearchBar' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\rashe\qlabs\app\pricing\page.tsx
+  19:45  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+
+C:\Users\rashe\qlabs\app\signin\page.tsx
+   14:12  warning  'loading' is assigned a value but never used                     @typescript-eslint/no-unused-vars
+   14:21  warning  'setLoading' is assigned a value but never used                  @typescript-eslint/no-unused-vars
+   64:23  error    Unexpected any. Specify a different type                         @typescript-eslint/no-explicit-any
+  135:20  error    `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+
+C:\Users\rashe\qlabs\app\signup\page.tsx
+   20:13  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\rashe\qlabs\app\signup\page.tsx:20:13
+  18 |     useEffect(() => {
+  19 |         if (initialEmail) {
+> 20 |             setEmail(initialEmail);
+     |             ^^^^^^^^ Avoid calling setState() directly within an effect
+  21 |         }
+  22 |     }, [initialEmail]);
+  23 |  react-hooks/set-state-in-effect
+   82:23  error  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            @typescript-eslint/no-explicit-any
+  107:28  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     react/no-unescaped-entities
+
+C:\Users\rashe\qlabs\components\BrandLogo.tsx
+  19:13  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+C:\Users\rashe\qlabs\components\DataTable.tsx
+  2:9  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\rashe\qlabs\components\ExportButton.tsx
+  16:9  warning  'router' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\rashe\qlabs\components\Filters.tsx
+  20:9  warning  'currentPrice' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\rashe\qlabs\components\Navbar.tsx
+  9:42  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\rashe\qlabs\components\SignupModal.tsx
+  57:23  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\rashe\qlabs\lib\types.ts
+  11:17  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+Γ£û 34 problems (24 errors, 10 warnings)
+

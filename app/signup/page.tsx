@@ -15,12 +15,6 @@ function SignUpForm() {
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
     const [message, setMessage] = useState("");
 
-    useEffect(() => {
-        if (initialEmail) {
-            setEmail(initialEmail);
-        }
-    }, [initialEmail]);
-
     const handleMagicLinkSignUp = async (e: React.FormEvent) => {
         e.preventDefault();
         
@@ -79,7 +73,7 @@ function SignUpForm() {
                 setStatus("success");
                 setMessage(`magic link sent at ${email}`);
             }
-        } catch (err: any) {
+        } catch (err: unknown) {
             setStatus("error");
             setMessage("An unexpected error occurred. Please try again.");
             console.error(err);
@@ -104,7 +98,7 @@ function SignUpForm() {
                        onClick={() => { setStatus("idle"); setEmail(""); }}
                        className="text-sm text-slate-400 hover:text-white transition-colors"
                    >
-                       Didn't receive it? Try again.
+                       Didn&apos;t receive it? Try again.
                    </button>
                 </div>
             </div>
