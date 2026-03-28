@@ -42,12 +42,14 @@ export default function Navbar() {
                 Datasets
               </Link>
               {session ? (
-                <Link
-                  href="/dashboard"
-                  className="text-brand-emerald hover:text-emerald-400 transition-colors border-transparent inline-flex items-center px-1 pt-1 text-sm font-semibold"
-                >
-                  Dashboard
-                </Link>
+                <div className="flex items-center">
+                  <Link
+                    href="/dashboard"
+                    className="text-brand-emerald bg-brand-emerald/10 border border-brand-emerald/20 hover:bg-brand-emerald/20 hover:border-brand-emerald/40 transition-all px-4 py-1.5 rounded-full text-xs font-bold tracking-wide h-fit"
+                  >
+                    Dashboard
+                  </Link>
+                </div>
               ) : (
                 <Link
                   href="#"
