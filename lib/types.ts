@@ -9,6 +9,8 @@ export interface Dataset {
   tags: string[];
   fields?: string[]; // Simplified for list view
   previewData?: any[]; // For detail view
+  totalRows?: number; // Fetched from backend aggregate count
+  lastUpdated?: string; // Resolved from last row date natively
 }
 
 export interface User {

@@ -36,28 +36,17 @@ export default function Navbar() {
             </Link>
             <div className="hidden sm:ml-10 sm:flex sm:space-x-8">
               <Link
-                href="/datasets"
+                href="/insights"
                 className="text-slate-400 hover:text-white transition-colors border-transparent inline-flex items-center px-1 pt-1 text-sm font-semibold"
               >
-                Datasets
+                Live Data
               </Link>
-              {session ? (
-                <div className="flex items-center">
-                  <Link
-                    href="/dashboard"
-                    className="text-brand-emerald bg-brand-emerald/10 border border-brand-emerald/20 hover:bg-brand-emerald/20 hover:border-brand-emerald/40 transition-all px-4 py-1.5 rounded-full text-xs font-bold tracking-wide h-fit"
-                  >
-                    Dashboard
-                  </Link>
-                </div>
-              ) : (
-                <Link
-                  href="#"
-                  className="text-slate-400 hover:text-white transition-colors border-transparent inline-flex items-center px-1 pt-1 text-sm font-semibold"
-                >
-                  API
-                </Link>
-              )}
+              <Link
+                href="/request"
+                className="text-slate-400 hover:text-white transition-colors border-transparent inline-flex items-center px-1 pt-1 text-sm font-semibold"
+              >
+                Custom Data
+              </Link>
               <Link
                 href="/pricing"
                 className="text-slate-400 hover:text-white transition-colors border-transparent inline-flex items-center px-1 pt-1 text-sm font-semibold"

@@ -84,16 +84,16 @@ export default function SignupModal({ isOpen, onClose }: SignupModalProps) {
 
                 <div className="p-8">
                     <div className="flex justify-center mb-6">
-                        <div className="h-16 w-16 bg-[#1a2332] rounded-full border border-white/5 flex items-center justify-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-brand-emerald" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                        <div className="h-16 w-16 bg-[#1a2332] rounded-full border border-white/5 flex items-center justify-center text-[#D1FC00]">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
                             </svg>
                         </div>
                     </div>
 
-                    <h3 className="text-2xl font-bold text-white text-center mb-2">Sign up to download dataset</h3>
+                    <h3 className="text-2xl font-bold text-white text-center mb-2">Get access to live data</h3>
                     <p className="text-slate-400 text-center text-sm mb-8">
-                        Join Q.Labs to access premium real-world insights.
+                        Start using live data in your projects instantly.
                     </p>
 
                     <form onSubmit={handleSignup} className="space-y-5">
@@ -144,10 +144,10 @@ export default function SignupModal({ isOpen, onClose }: SignupModalProps) {
                     </form>
 
                     <div className="mt-6 flex items-center justify-center gap-2 text-sm text-slate-400">
-                        <svg className="h-4 w-4 text-brand-emerald" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg className="h-4 w-4 text-[#D1FC00]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
-                        Get your first 1,000 rows for free.
+                        Get started with free API access.
                     </div>
                 </div>
 

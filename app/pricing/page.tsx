@@ -1,130 +1,131 @@
 import Link from "next/link";
-import { Metadata } from "next";
+import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: "Pricing - Q.Labs",
-    description: "Simple, transparent pricing for premium datasets.",
+  title: "Pricing — Q.Labs",
+  description: "Simple, transparent pricing. Start free. Upgrade when you grow.",
 };
 
 export default function PricingPage() {
-    return (
-        <main className="min-h-screen bg-brand-slate-dark pt-20 pb-32">
-            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-                {/* Header */}
-                <div className="mb-16">
-                    <h1 className="text-5xl md:text-6xl font-black text-white mb-6 tracking-tight">
-                        Simple, <span className="text-brand-emerald">transparent</span> pricing
-                    </h1>
-                    <p className="text-xl text-slate-400 max-w-2xl">
-                        Choose the plan that's right for your data needs. No hidden fees, no complexity.
-                    </p>
-                </div>
+  return (
+    <main className="min-h-screen pt-[160px] bg-[#FAFAFA] text-[#1C1917] font-inter pb-32">
+      {/* Header */}
+      <section className="px-6 md:px-12 pb-16 flex justify-center">
+        <div className="max-w-[800px] w-full text-center flex flex-col items-center">
+          <h1 className="font-manrope font-extrabold text-[56px] leading-[1.1] tracking-[-2px] text-[#1C1917] mb-6">
+            Pay only for what you use.
+          </h1>
+          <p className="font-inter text-[20px] leading-[32px] text-[#5B5B5B] max-w-[500px]">
+            Simple, transparent pricing for teams of all sizes.
+          </p>
+        </div>
+      </section>
 
-                {/* Pricing Cards */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-24">
-                    {/* Free Plan */}
-                    <div className="bg-[#0a0f1a] rounded-2xl p-8 border border-brand-emerald/30 relative shadow-[0_0_30px_rgba(204,255,0,0.05)] h-full flex flex-col">
-                        <div className="absolute top-6 right-6 px-3 py-1 bg-brand-emerald text-slate-950 text-[10px] font-black uppercase tracking-widest rounded-full shadow-[0_0_10px_rgba(204,255,0,0.4)]">
-                            Popular
-                        </div>
-                        
-                        <h2 className="text-2xl font-bold text-white mb-4">Free</h2>
-                        <div className="flex items-baseline gap-2 mb-8">
-                            <span className="text-6xl font-black text-white">$0</span>
-                            <span className="text-slate-500 font-medium">/ month</span>
-                        </div>
+      {/* Plans */}
+      <section className="px-6 md:px-12 flex justify-center">
+        <div className="max-w-[880px] w-full grid grid-cols-1 md:grid-cols-2 gap-8">
 
-                        <Link 
-                            href="/datasets"
-                            className="w-full py-4 bg-brand-emerald hover:bg-brand-emerald-hover text-slate-950 text-base font-black rounded-xl text-center transition-all shadow-[0_0_20px_rgba(204,255,0,0.2)] hover:scale-105 active:scale-95 mb-10 inline-block block"
-                        >
-                            Get Started
-                        </Link>
-
-                        <div className="space-y-4 mt-auto">
-                            <div className="flex items-start gap-3">
-                                <svg className="h-5 w-5 text-brand-emerald shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
-                                </svg>
-                                <span className="text-slate-300">Access to previews</span>
-                            </div>
-                            <div className="flex items-start gap-3">
-                                <svg className="h-5 w-5 text-brand-emerald shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
-                                </svg>
-                                <span className="text-slate-300">1000 rows download</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Pro Plan */}
-                    <div className="bg-[#0a0f1a] rounded-2xl p-8 border border-white/5 opacity-80 h-full flex flex-col">
-                        <h2 className="text-2xl font-bold text-white mb-4">Pro</h2>
-                        <div className="flex items-baseline gap-2 mb-8">
-                            <span className="text-4xl font-black text-slate-500">--</span>
-                            <span className="text-slate-500 font-medium tracking-wide">coming soon</span>
-                        </div>
-
-                        <button 
-                            className="w-full py-4 bg-slate-800 text-slate-400 text-base font-bold rounded-xl transition-all hover:bg-slate-700 hover:text-white mb-10"
-                        >
-                            Notify Me
-                        </button>
-
-                        <div className="space-y-4 mt-auto">
-                            <div className="flex items-start gap-3 opacity-50">
-                                <svg className="h-5 w-5 text-slate-400 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-                                </svg>
-                                <span className="text-slate-400">Full API access</span>
-                            </div>
-                            <div className="flex items-start gap-3 opacity-50">
-                                <svg className="h-5 w-5 text-slate-400 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                </svg>
-                                <span className="text-slate-400">Scraper access</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                {/* FAQ Section */}
-                <div className="max-w-3xl">
-                    <h2 className="text-2xl font-bold text-white mb-8">Frequently Asked Questions</h2>
-                    
-                    <div className="space-y-6">
-                        <div className="border-b border-white/5 pb-6">
-                            <h3 className="text-lg font-bold text-white mb-3 flex justify-between items-center cursor-pointer group">
-                                How do I download data?
-                                <svg className="h-5 w-5 text-slate-500 group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
-                                </svg>
-                            </h3>
-                            <p className="text-slate-400 leading-relaxed pr-8">
-                                In the Free tier, you can download up to 1,000 rows of data directly from the preview pane in CSV format. An account is required to start downloading.
-                            </p>
-                        </div>
-                        
-                        <div className="border-b border-white/5 pb-6">
-                            <h3 className="text-lg font-bold text-slate-300 mb-0 flex justify-between items-center cursor-pointer group hover:text-white transition-colors">
-                                What is included in the API?
-                                <svg className="h-5 w-5 text-slate-500 group-hover:text-white transition-colors transform rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
-                                </svg>
-                            </h3>
-                        </div>
-
-                        <div className="border-b border-white/5 pb-6">
-                            <h3 className="text-lg font-bold text-slate-300 mb-0 flex justify-between items-center cursor-pointer group hover:text-white transition-colors">
-                                When will the Scraper be available?
-                                <svg className="h-5 w-5 text-slate-500 group-hover:text-white transition-colors transform rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
-                                </svg>
-                            </h3>
-                        </div>
-                    </div>
-                </div>
+          {/* Free Plan */}
+          <div className="bg-white rounded-[40px] border border-[#F0F0F0] p-10 flex flex-col shadow-[0_4px_24px_-12px_rgba(0,0,0,0.05)]">
+            <div className="mb-10">
+              <h2 className="font-inter font-bold text-[18px] text-[#1C1917] mb-[12px]">Starter</h2>
+              <div className="flex items-baseline gap-2">
+                <span className="font-manrope font-black text-[56px] tracking-[-3px] text-[#1C1917]">$0</span>
+                <span className="font-inter text-[15px] text-[#A8A29E]">/ mo</span>
+              </div>
             </div>
-        </main>
-    );
+
+            <ul className="flex flex-col gap-5 mb-12 flex-1">
+              {[
+                "10,000 requests / month",
+                "Standard support",
+                "CSV / JSON exports",
+              ].map((f, i) => (
+                <li key={i} className="flex items-center gap-4">
+                  <div className="w-5 h-5 flex items-center justify-center shrink-0">
+                    <svg className="w-4 h-4" viewBox="0 0 12 12" fill="none">
+                      <path d="M2 6l3 3 5-5" stroke="#A8A29E" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  </div>
+                  <span className="font-inter text-[15px] text-[#5B5B5B]">{f}</span>
+                </li>
+              ))}
+            </ul>
+
+            <Link
+              href="/signup"
+              className="w-full bg-white text-[#1C1917] border border-[#E7E5E4] font-inter font-bold text-[15px] py-[16px] rounded-full flex items-center justify-center hover:border-black transition-colors"
+            >
+              Start Free
+            </Link>
+          </div>
+
+          {/* Custom Plan */}
+          <div className="bg-white rounded-[40px] border-2 border-[#D1FC00] p-10 flex flex-col shadow-[0_8px_32px_-12px_rgba(209,252,0,0.3)] relative">
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#D1FC00] text-[#4C5D00] font-inter font-black text-[10px] uppercase tracking-[1.5px] px-4 py-1.5 rounded-full">
+              Most Popular
+            </div>
+            <div className="mb-10 mt-2">
+              <h2 className="font-inter font-bold text-[18px] text-[#1C1917] mb-[12px]">Enterprise</h2>
+              <div className="flex items-baseline gap-2">
+                <span className="font-manrope font-black text-[48px] tracking-[-2px] text-[#1C1917]">Custom</span>
+              </div>
+            </div>
+
+            <ul className="flex flex-col gap-5 mb-12 flex-1">
+              {[
+                "Unlimited requests",
+                "Dedicated account manager",
+                "Custom SLAs & pipelines",
+                "Priority 24/7 support",
+              ].map((f, i) => (
+                <li key={i} className="flex items-center gap-4">
+                  <div className="w-5 h-5 flex items-center justify-center shrink-0">
+                    <svg className="w-4 h-4" viewBox="0 0 12 12" fill="none">
+                      <path d="M2 6l3 3 5-5" stroke="#1C1917" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  </div>
+                  <span className="font-inter text-[15px] text-[#1C1917] font-medium">{f}</span>
+                </li>
+              ))}
+            </ul>
+
+            <Link
+              href="/request"
+              className="w-full bg-[#D1FC00] text-[#1C1917] font-inter font-bold text-[15px] py-[16px] rounded-full flex items-center justify-center hover:bg-[#C5ED00] transition-colors"
+            >
+              Request Custom Scraping
+            </Link>
+          </div>
+
+        </div>
+      </section>
+
+      {/* What's included */}
+      <section className="px-6 md:px-12 mt-24 flex justify-center">
+        <div className="max-w-[880px] w-full flex flex-col items-center">
+            <p className="font-inter font-bold text-[12px] uppercase tracking-[2px] text-[#A8A29E] mb-10">
+                What's included in every plan
+            </p>
+            <div className="flex flex-wrap justify-center gap-8 md:gap-16">
+                {[
+                    "Secure Data Encryption",
+                    "Real-time Syncing",
+                    "90-day History"
+                ].map(feature => (
+                    <div key={feature} className="flex items-center gap-3">
+                        <div className="w-5 h-5 bg-[#D1FC00] rounded-sm flex items-center justify-center shrink-0">
+                            <svg className="w-3 h-3" viewBox="0 0 12 12" fill="none">
+                                <path d="M2 6l3 3 5-5" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                            </svg>
+                        </div>
+                        <span className="font-inter font-bold text-[15px] text-[#1C1917]">{feature}</span>
+                    </div>
+                ))}
+            </div>
+        </div>
+      </section>
+
+    </main>
+  );
 }

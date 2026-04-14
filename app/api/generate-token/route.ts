@@ -103,18 +103,14 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Failed to persist token" }, { status: 500 });
     }
 
-    // --- Build API URL (Progressive Disclosure defaults to CSV) ---
+    // --- Build API URL (Defaults to JSON) ---
     const apiUrl = `${appBase}/api/datasets/${dataset_slug}?token=${token}`;
     
-    // Developer JSON API syntax hint:
-    const jsonApiUrl = `${apiUrl}&format=json`;
-
     const expiresAt = new Date(exp * 1000).toISOString();
 
     return NextResponse.json({ 
       token, 
       api_url: apiUrl, 
-      json_api_url: jsonApiUrl,
       expires_at: expiresAt 
     });
   } catch (err: unknown) {

@@ -1,19 +1,33 @@
 "use client";
 
-import { useState, Suspense, useEffect } from "react";
+import { useState, Suspense } from "react";
 import { supabase } from "@/lib/supabase";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import BrandLogo from "@/components/BrandLogo";
+import { SelectionChips } from "@/components/SelectionChips";
 
 function SignUpForm() {
     const searchParams = useSearchParams();
-    const next = searchParams.get("next") || "/datasets";
+    const next = searchParams.get("next") || "/dashboard";
     const initialEmail = searchParams.get("email") || "";
 
     const [email, setEmail] = useState(initialEmail);
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
     const [message, setMessage] = useState("");
+    const [insightsSaved, setInsightsSaved] = useState(false);
+    
+    // Insight Form State
+    const [userType, setUserType] = useState<string[]>([]);
+    const [experience, setExperience] = useState("");
+    const [frequency, setFrequency] = useState("");
+
+    const handleToggleUserType = (opt: string) => {
+        setUserType(prev => 
+            prev.includes(opt) 
+                ? prev.filter(t => t !== opt) 
+                : [...prev, opt]
+        );
+    };
 
     const handleMagicLinkSignUp = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -57,13 +71,17 @@ function SignUpForm() {
                 email,
                 options: {
                     emailRedirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(next)}`,
-                    shouldCreateUser: true, // Allow registration of new users
+                    shouldCreateUser: true,
+                    data: {
+                        user_type: userType.join(", "),
+                        experience_level: experience,
+                        usage_frequency: frequency
+                    }
                 },
             });
 
             if (error) {
                 setStatus("error");
-                // Provide clearer messaging for common errors
                 if (error.message.toLowerCase().includes("over limit") || error.message.toLowerCase().includes("rate limit")) {
                      setMessage("Please wait a moment before requesting another link.");
                 } else {
@@ -80,25 +98,36 @@ function SignUpForm() {
         }
     };
 
+
     if (status === "success") {
         return (
-            <div className="bg-slate-800/40 backdrop-blur-md py-12 px-6 shadow-2xl rounded-2xl border border-brand-emerald/20 sm:px-12 w-full text-center relative overflow-hidden">
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-brand-emerald to-transparent"></div>
-                <div className="mx-auto w-16 h-16 bg-brand-emerald/10 text-brand-emerald rounded-full flex items-center justify-center mb-6">
-                    <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                    </svg>
+            <div className="bg-[#FFFFFF] border border-[#1C1917]/5 py-[48px] px-[32px] sm:px-[48px] shadow-[0px_25px_50px_-12px_rgba(47,47,47,0.05)] rounded-[48px] w-full relative overflow-hidden">
+                <div className="text-center mb-8">
+                    <div className="mx-auto w-[48px] h-[48px] bg-[#D1FC00] rounded-full flex items-center justify-center mb-4">
+                        <svg className="w-[24px] h-[24px]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                        </svg>
+                    </div>
+                    <h3 className="font-manrope font-bold text-[24px] text-[#2F2F2F] tracking-[-0.6px] mb-2">Check your inbox</h3>
+                    <p className="font-inter font-normal text-[15px] text-[#5B5B5B]">
+                        Magic link sent to <strong>{email}</strong>
+                    </p>
                 </div>
-                <h3 className="text-xl font-bold text-white mb-2">Check your inbox</h3>
-                <p className="text-slate-300 font-medium">
-                    {message}
-                </p>
-                <div className="mt-8">
+
+                <div className="pt-6 border-t border-[#F0F0F0] text-center">
+                    <div className="py-2 text-[24px] mb-2">🚀</div>
+                    <h4 className="font-manrope font-bold text-[18px] text-[#2F2F2F] mb-1">Success!</h4>
+                    <p className="font-inter text-[14px] text-[#5B5B5B]">
+                        Preferences saved. We&apos;ve sent a link to your email to complete your registration.
+                    </p>
+                </div>
+
+                <div className="mt-8 text-center">
                    <button 
-                       onClick={() => { setStatus("idle"); setEmail(""); }}
-                       className="text-sm text-slate-400 hover:text-white transition-colors"
+                       onClick={() => { setStatus("idle"); setEmail(""); setInsightsSaved(false); }}
+                       className="font-inter font-bold text-[12px] text-[#A8A29E] hover:text-[#2F2F2F] transition-colors uppercase tracking-[1px]"
                    >
-                       Didn&apos;t receive it? Try again.
+                       Didn't receive it? Try again.
                    </button>
                 </div>
             </div>
@@ -106,10 +135,36 @@ function SignUpForm() {
     }
 
     return (
-        <div className="bg-slate-800/40 backdrop-blur-md py-10 px-6 shadow-2xl rounded-2xl border border-white/5 sm:px-12 w-full">
-            <form onSubmit={handleMagicLinkSignUp} className="space-y-6">
-                <div>
-                     <label htmlFor="email" className="block text-sm font-medium text-slate-300 mb-2">
+        <div className="bg-[#FFFFFF] border border-[#1C1917]/5 py-[48px] px-[32px] shadow-[0px_25px_50px_-12px_rgba(47,47,47,0.05)] rounded-[48px] sm:px-[48px] w-full">
+            <form onSubmit={handleMagicLinkSignUp} className="flex flex-col gap-8">
+                <div className="flex flex-col gap-1 mb-2">
+                    <h4 className="font-manrope font-bold text-[18px] text-[#2F2F2F]">Help us tailor your experience</h4>
+                    <p className="font-inter text-[13px] text-[#A8A29E]">Takes 10 seconds, and it is optional.</p>
+                </div>
+
+                <SelectionChips 
+                    label="What best describes you?"
+                    options={["Student", "Developer", "Analyst", "Business Owner", "Exploring"]}
+                    selected={userType}
+                    onSelect={handleToggleUserType}
+                />
+
+                <SelectionChips 
+                    label="Experience level"
+                    options={["Beginner", "Intermediate", "Advanced"]}
+                    selected={experience}
+                    onSelect={setExperience}
+                />
+
+                <SelectionChips 
+                    label="How often do you work with data?"
+                    options={["Daily", "Weekly", "Occasionally", "Rarely"]}
+                    selected={frequency}
+                    onSelect={setFrequency}
+                />
+
+                <div className="flex flex-col gap-2 pt-4 border-t border-[#F0F0F0]">
+                     <label htmlFor="email" className="font-inter font-bold text-[14px] text-[#2F2F2F]">
                         Email Address
                     </label>
                     <input
@@ -120,43 +175,42 @@ function SignUpForm() {
                         required
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        className="appearance-none block w-full px-4 py-3 bg-slate-900/50 border border-white/10 rounded-xl placeholder-slate-500 text-white focus:outline-none focus:ring-2 focus:ring-brand-emerald focus:border-transparent transition-all"
+                        className="w-full px-[24px] py-[16px] bg-[#F6F6F6] rounded-[9999px] font-inter font-normal text-[16px] text-[#2F2F2F] placeholder:text-[#A8A29E] focus:outline-none focus:ring-2 focus:ring-[#D1FC00]/50"
                         placeholder="you@company.com"
                     />
                 </div>
 
-                <div className="pt-2">
+                <div className="pt-2 flex flex-col gap-4">
                     <button
                         type="submit"
                         disabled={status === "loading"}
-                        className={`w-full flex items-center justify-center gap-3 py-3.5 px-4 border border-transparent rounded-xl bg-brand-emerald text-slate-900 font-bold hover:bg-emerald-400 transition-all active:scale-95 shadow-[0_0_15px_rgba(16,185,129,0.3)]
-                      ${status === "loading" ? 'opacity-75 cursor-wait shadow-none' : 'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-emerald focus:ring-offset-slate-900'}
-                    `}
+                        className={`w-full flex items-center justify-center gap-3 py-[16px] px-[24px] rounded-[9999px] bg-[#D1FC00] text-[#000000] font-inter font-bold text-[18px] transition-all
+                      ${status === "loading" ? 'opacity-75 cursor-wait' : 'hover:bg-[#DDFF00]'}`}
                     >
                         {status === "loading" ? (
                             <>
-                                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-slate-900"></div>
+                                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-black/20 border-t-black"></div>
                                 <span>Sending Link...</span>
                             </>
                         ) : (
                             <span>Create account</span>
                         )}
                     </button>
-                    <p className="text-xs text-slate-500 mt-4 text-center">
+                    <p className="font-inter text-[12px] text-[#A8A29E] text-center px-4">
                         By signing up, you agree to our Terms of Service and Privacy Policy.
                     </p>
                 </div>
             </form>
 
-            <div className="mt-8 text-center text-sm text-slate-400 pt-6 border-t border-white/10">
-                Already have an account?{" "}
-                <Link href="/signin" className="text-brand-emerald hover:text-emerald-400 font-bold transition-colors">
+            <div className="mt-8 text-center text-sm pt-6 border-t border-[#E7E5E4]">
+                <span className="font-inter font-normal text-[14px] text-[#5B5B5B]">Already have an account? </span>
+                <Link href="/signin" className="font-inter font-bold text-[14px] text-[#2F2F2F] hover:text-[#5B5B5B] transition-colors underline">
                     Log in
                 </Link>
             </div>
 
             {status === "error" && message && (
-                <div className="mt-6 p-4 rounded-xl border bg-red-500/10 text-red-400 border-red-500/20 text-sm font-medium text-center">
+                <div className="mt-6 p-4 rounded-xl bg-red-50 text-red-600 font-inter font-medium text-[14px] text-center border border-red-100">
                     {message}
                 </div>
             )}
@@ -166,35 +220,32 @@ function SignUpForm() {
 
 export default function SignUpPage() {
     return (
-        <main className="min-h-screen bg-brand-slate-dark flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-            {/* Background Glow */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-brand-emerald/5 rounded-full blur-[120px] pointer-events-none"></div>
-
-            <div className="sm:mx-auto sm:w-full sm:max-w-md relative z-10 text-center">
-                <div className="inline-flex items-center justify-center mb-8">
-                    <BrandLogo size="lg" />
-                </div>
-                <h2 className="text-4xl font-black text-white mb-3 tracking-tight">
+        <main className="min-h-screen bg-[#F6F6F6] flex flex-col justify-center py-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+            <div className="sm:mx-auto sm:w-full sm:max-w-md relative z-10 flex flex-col items-center text-center mb-8">
+                <Link href="/" className="flex items-center gap-[8px] mb-8">
+                    <img src="/logo.png" alt="Q.Labs Logo" className="h-12 w-auto object-contain" />
+                </Link>
+                <h2 className="font-manrope font-extrabold text-[40px] leading-[48px] tracking-[-1.2px] text-[#2F2F2F] mb-4">
                     Create an account
                 </h2>
-                <p className="text-slate-400 font-medium mb-10">
-                    Enter your email to get started with Q.Insights.
+                <p className="font-inter text-[16px] leading-[26px] text-[#5B5B5B]">
+                    Enter your email to get started with Q.Labs.
                 </p>
             </div>
 
-            <div className="sm:mx-auto sm:w-full sm:max-w-md relative z-10">
+            <div className="sm:mx-auto sm:w-full sm:max-w-md relative z-10 w-full">
                 <Suspense fallback={
-                    <div className="bg-slate-800/40 backdrop-blur-md py-20 px-6 shadow-2xl rounded-2xl border border-white/5 text-center">
-                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-emerald mx-auto mb-4"></div>
-                        <span className="text-slate-500 font-bold uppercase tracking-widest text-xs">Loading Sign Up...</span>
+                    <div className="bg-[#FFFFFF] py-20 px-6 shadow-sm rounded-[48px] border border-[#1C1917]/5 text-center flex flex-col items-center justify-center">
+                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-black/20 border-t-black mb-4"></div>
+                        <span className="font-inter text-[#5B5B5B] font-bold tracking-[1.2px] uppercase text-xs">Loading Sign Up...</span>
                     </div>
                 }>
                     <SignUpForm />
                 </Suspense>
 
-                <p className="mt-8 text-center text-sm">
-                    <Link href="/datasets" className="font-bold text-slate-500 hover:text-brand-emerald transition-colors uppercase tracking-widest">
-                        ← Back to Datasets
+                <p className="mt-8 text-center">
+                    <Link href="/" className="font-inter font-bold text-[12px] text-[#A8A29E] hover:text-[#2F2F2F] transition-colors uppercase tracking-[1.2px]">
+                        ← Back to Home
                     </Link>
                 </p>
             </div>

@@ -1,38 +1,25 @@
 import Link from "next/link";
 import { Dataset } from "@/lib/types";
 
-interface DatasetCardProps {
-  dataset: Dataset;
+export function DatasetCard({ dataset }: { dataset: Dataset }) {
+    return (
+        <article className="bg-white rounded-[40px] border border-[#F0F0F0] p-[40px] flex flex-col justify-between items-start h-[360px] shadow-[0_4px_24px_-12px_rgba(0,0,0,0.05)] transition-all hover:shadow-[0_8px_32px_-16px_rgba(0,0,0,0.1)] hover:-translate-y-1">
+            <div className="flex flex-col gap-4 w-full">
+                <h3 className="font-manrope font-bold text-[22px] tracking-[-0.5px] text-[#1C1917] leading-tight">
+                    {dataset.title}
+                </h3>
+                <p className="font-inter font-normal text-[15px] text-[#5B5B5B] leading-[26px]">
+                    {dataset.description}
+                </p>
+            </div>
+
+            <div className="mt-auto pt-[40px] w-full">
+                <Link href={`/datasets/${dataset.slug}`} className="w-full h-[56px] bg-[#F9FEE6] rounded-[48px] flex items-center justify-center font-inter font-bold text-[15px] text-[#1C1917] hover:bg-[#D1FC00] transition-colors">
+                    Try Dataset
+                </Link>
+            </div>
+        </article>
+    );
 }
 
-export default function DatasetCard({ dataset }: DatasetCardProps) {
-  return (
-    <Link
-      href={`/datasets/${dataset.slug}`}
-      className="group block p-8 border border-white/5 rounded-2xl hover:shadow-[0_0_40px_rgba(16,185,129,0.05)] hover:border-brand-emerald/20 transition-all bg-slate-800/40 backdrop-blur-sm h-full flex flex-col relative overflow-hidden"
-    >
-      <h3 className="text-xl font-bold text-white mb-1 group-hover:text-brand-emerald transition-colors pr-6">
-        {dataset.title}
-      </h3>
-      <div className="text-xs text-slate-500 mb-4 pb-4 border-b border-white/5">
-        Source: {dataset.source}
-      </div>
-
-      <p className="text-slate-400 text-sm mb-6 flex-grow line-clamp-3 leading-relaxed">
-        {dataset.description}
-      </p>
-
-      <div className="mt-auto">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="h-2 w-2 rounded-full bg-brand-emerald shadow-[0_0_8px_rgba(204,255,0,0.6)]"></div>
-            <span className="text-xs text-slate-400 font-medium">{dataset.price === 0 ? 'Free' : 'Premium'} Dataset</span>
-          </div>
-          <div className="px-4 py-2 bg-brand-emerald text-slate-950 text-xs font-black rounded-lg shadow-[0_0_20px_rgba(204,255,0,0.2)] group-hover:bg-brand-emerald-hover group-hover:scale-105 active:scale-95 transition-all">
-            View Dataset
-          </div>
-        </div>
-      </div>
-    </Link>
-  );
-}
+export default DatasetCard;

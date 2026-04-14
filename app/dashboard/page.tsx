@@ -1,207 +1,215 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
-
-type ApiToken = {
-  id: string;
-  dataset_slug: string;
-  token_string: string;
-  filters: any;
-  status: "active" | "revoked";
-  created_at: string;
-};
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export default function DashboardPage() {
-  const router = useRouter();
-  const [tokens, setTokens] = useState<ApiToken[]>([]);
-  const [activeTab, setActiveTab] = useState<"active" | "revoked">("active");
-  const [loading, setLoading] = useState(true);
-  const [userEmail, setUserEmail] = useState<string | null>(null);
+    const [user, setUser] = useState<any>(null);
+    const [tokens, setTokens] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
+    const router = useRouter();
+    const pathname = usePathname();
 
-  useEffect(() => {
-    const fetchSessionAndTokens = async () => {
-      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
-      
-      if (sessionError || !session) {
-        router.push("/signin");
-        return;
-      }
-      
-      setUserEmail(session.user.email ?? null);
+    const handleRevoke = async (tokenId: string) => {
+        if (!confirm("Are you sure you want to revoke this connection? This will immediately stop data access for this URL.")) return;
 
-      const { data, error } = await supabase
-        .from("api_tokens")
-        .select("*")
-        .order("created_at", { ascending: false });
+        try {
+            const { error } = await supabase
+                .from("api_tokens")
+                .update({ status: "revoked" })
+                .eq("id", tokenId);
 
-      if (!error && data) {
-        setTokens(data as ApiToken[]);
-      }
-      
-      setLoading(false);
+            if (error) throw error;
+
+            // Update local state
+            setTokens(tokens.map(t => t.id === tokenId ? { ...t, status: 'revoked' } : t));
+        } catch (err) {
+            console.error("Revoke error", err);
+            alert("Failed to revoke connection. Please try again.");
+        }
     };
 
-    fetchSessionAndTokens();
-  }, [router]);
+    useEffect(() => {
+        const fetchDashboardData = async () => {
+            const { data: { session } } = await supabase.auth.getSession();
+            if (!session) {
+                router.push("/signup");
+                return;
+            } else {
+                setUser(session.user);
+            }
 
-  const handleRevoke = async (id: string) => {
-    const { error } = await supabase
-      .from("api_tokens")
-      .update({ status: "revoked" })
-      .eq("id", id);
+            try {
+                // Fetch API tokens instead of dynamic column data
+                const { data: apiTokens, error: tokenError } = await supabase
+                    .from("api_tokens")
+                    .select("*")
+                    .eq("user_id", session.user.id)
+                    .order("created_at", { ascending: false });
+                
+                if (apiTokens) {
+                    setTokens(apiTokens);
+                }
+            } catch (err) {
+                console.error("Dashboard fetch error", err);
+            }
 
-    if (!error) {
-      setTokens(tokens.map(t => t.id === id ? { ...t, status: "revoked" } : t));
-    } else {
-      console.error("Failed to revoke token:", error);
-      alert("Failed to revoke token. Please try again.");
+            setLoading(false);
+        };
+
+        fetchDashboardData();
+    }, [router]);
+
+    if (loading) {
+        return (
+            <div className="min-h-screen bg-[#FAFAFA] flex items-center justify-center">
+                <div className="w-10 h-10 border-4 border-black/10 border-t-[#D1FC00] rounded-full animate-spin"></div>
+            </div>
+        );
     }
-  };
 
-  const handleCopy = (text: string) => {
-    navigator.clipboard.writeText(text);
-    alert("Copied to clipboard!");
-  };
-
-  const getDisplayUrl = (token: ApiToken) => {
-    const origin = typeof window !== 'undefined' ? window.location.origin : 'https://qlabs.co';
-    const baseUrl = `${origin}/api/datasets/${token.dataset_slug}?token=${token.token_string}`;
-    const platform = token.filters?.platform || "browser"; // Default to browser CSV 
-    
-    if (platform === "sheets") {
-      return `=IMPORTDATA("${baseUrl}")`;
-    } else if (platform === "excel" || platform === "browser") {
-      return baseUrl;
-    } else if (platform === "postman") {
-      return `${baseUrl}&format=json`;
+    if (!user) {
+        return null; // Will redirect
     }
-    return baseUrl;
-  };
 
-  if (loading) {
     return (
-      <main className="min-h-screen bg-brand-slate-dark flex items-center justify-center p-4">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-emerald"></div>
-      </main>
-    );
-  }
+        <div className="min-h-screen bg-[#FAFAFA] flex">
+            {/* Sidebar */}
+            <aside className="w-[280px] bg-white border-r border-[#F0F0F0] h-screen sticky top-0 flex flex-col pt-8 pb-8 flex-shrink-0 z-40 hidden lg:flex">
+                <div className="px-8 pb-10 border-b border-[#F0F0F0]">
+                    <Link href="/" className="flex items-center gap-[12px]">
+                        <img src="/logo.png" alt="Q.Labs Logo" className="h-8 w-auto object-contain" />
+                    </Link>
+                </div>
+                
+                <div className="flex flex-col gap-2 mt-8 px-4 flex-1">
+                    <Link href="/" className={`px-4 py-3 rounded-[16px] font-inter font-bold text-[14px] flex items-center gap-3 transition-colors ${pathname === '/' ? 'bg-[#D1FC00] text-[#1C1917]' : 'text-[#5B5B5B] hover:bg-[#F6F6F6] hover:text-[#1C1917]'}`}>
+                        Home
+                    </Link>
+                    <Link href="/datasets" className={`px-4 py-3 rounded-[16px] font-inter font-bold text-[14px] flex items-center gap-3 transition-colors ${pathname === '/datasets' ? 'bg-[#D1FC00] text-[#1C1917]' : 'text-[#5B5B5B] hover:bg-[#F6F6F6] hover:text-[#1C1917]'}`}>
+                        Datasets
+                    </Link>
+                    <Link href="/dashboard" className={`px-4 py-3 rounded-[16px] font-inter font-bold text-[14px] flex items-center gap-3 transition-colors ${pathname === '/dashboard' ? 'bg-[#D1FC00] text-[#1C1917]' : 'text-[#5B5B5B] hover:bg-[#F6F6F6] hover:text-[#1C1917]'}`}>
+                        Dashboard
+                    </Link>
+                </div>
 
-  const activeTokens = tokens.filter(t => t.status === "active");
-  const revokedTokens = tokens.filter(t => t.status === "revoked");
-  const displayedTokens = activeTab === "active" ? activeTokens : revokedTokens;
-
-  return (
-    <main className="min-h-screen bg-brand-slate-dark text-white pt-28 pb-20 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-6xl mx-auto">
-        
-        {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
-          <div>
-            <h1 className="text-4xl font-extrabold tracking-tight mb-2">API Dashboard</h1>
-            <p className="text-slate-400">Manage your active Google Sheets connections and API keys.</p>
-          </div>
-          <div className="flex items-center gap-4 bg-slate-800/50 px-5 py-3 rounded-xl border border-white/5">
-            <div className="h-10 w-10 rounded-full bg-brand-emerald/20 flex items-center justify-center text-brand-emerald font-bold">
-              {userEmail?.charAt(0).toUpperCase() || "U"}
-            </div>
-            <div>
-              <p className="text-sm font-medium text-white">{userEmail}</p>
-              <p className="text-xs text-brand-emerald font-semibold uppercase tracking-wider">Free Tier</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Tokens List */}
-        <div className="bg-slate-900 border border-white/5 rounded-3xl overflow-hidden shadow-2xl">
-          <div className="flex border-b border-white/5 bg-slate-800/30 px-6 pt-6 gap-6">
-            <button
-              onClick={() => setActiveTab("active")}
-              className={`pb-4 text-sm font-bold transition-colors border-b-2 ${activeTab === "active" ? "border-brand-emerald text-brand-emerald" : "border-transparent text-slate-400 hover:text-white"}`}
-            >
-              Active Links ({activeTokens.length})
-            </button>
-            <button
-              onClick={() => setActiveTab("revoked")}
-              className={`pb-4 text-sm font-bold transition-colors border-b-2 ${activeTab === "revoked" ? "border-red-500 text-red-500" : "border-transparent text-slate-400 hover:text-white"}`}
-            >
-              Revoked Links ({revokedTokens.length})
-            </button>
-          </div>
-          
-          <div className="p-0">
-            {displayedTokens.length === 0 ? (
-              <div className="p-12 text-center text-slate-500">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 mx-auto mb-4 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
-                </svg>
-                <p>No {activeTab} API links found.</p>
-              </div>
-            ) : (
-              <div className="divide-y divide-white/5">
-                {displayedTokens.map((token) => {
-                  const createdDate = new Date(token.created_at);
-                  const expiryDate = new Date(createdDate);
-                  expiryDate.setDate(expiryDate.getDate() + 30);
-                  
-                  return (
-                    <div key={token.id} className="p-6 md:p-8 hover:bg-white/[0.02] transition-colors">
-                      <div className="flex flex-col md:flex-row gap-6 justify-between">
-                        <div className="space-y-4 flex-1">
-                          <div className="flex items-center gap-3">
-                            <h3 className="text-lg font-bold text-white capitalize">{token.dataset_slug.replace(/-/g, ' ')}</h3>
-                            <span className="bg-brand-emerald/10 text-brand-emerald px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider">
-                              {token.filters?.platform || "browser"}
-                            </span>
-                          </div>
-                          
-                          <div className="text-sm border border-white/10 bg-black/40 rounded-lg p-3 font-mono text-slate-400 break-all relative group pr-12">
-                            <div className="absolute right-2 top-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                              <button 
-                                onClick={() => handleCopy(getDisplayUrl(token))}
-                                className="bg-slate-800 hover:bg-slate-700 text-white p-1.5 rounded border border-white/10"
-                                title="Copy Formula"
-                              >
-                                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                                </svg>
-                              </button>
-                            </div>
-                            {getDisplayUrl(token)}
-                          </div>
-                          
-                          <div className="flex flex-wrap gap-x-6 gap-y-2 text-xs text-slate-500 font-medium">
-                            <p>Created: <span className="text-slate-300">{createdDate.toLocaleString("en-US", { month: "short", day: "numeric", year: "numeric", hour: "2-digit", minute: "2-digit" })}</span></p>
-                            <p>Expires: <span className="text-amber-400">{expiryDate.toLocaleString("en-US", { month: "short", day: "numeric", year: "numeric", hour: "2-digit", minute: "2-digit" })}</span></p>
-                            
-                            {token.filters && Object.keys(token.filters).length > 0 && (
-                              <p className="border-l border-white/10 pl-6">
-                                Filters: <span className="text-slate-300">{Object.keys(token.filters).filter(k => k !== 'platform').join(", ") || "None"}</span>
-                              </p>
-                            )}
-                          </div>
-                        </div>
-
-                        {token.status === "active" && (
-                          <div className="flex-shrink-0 flex items-start">
-                            <button
-                              onClick={() => handleRevoke(token.id)}
-                              className="text-xs font-bold uppercase tracking-widest text-red-500 hover:text-red-400 border border-red-500/20 hover:bg-red-500/10 px-4 py-2 rounded-lg transition-colors"
-                            >
-                              Revoke
-                            </button>
-                          </div>
-                        )}
-                      </div>
+                <div className="px-8 mt-auto flex items-center gap-3">
+                    <div className="w-10 h-10 bg-[#E7E5E4] rounded-full overflow-hidden flex items-center justify-center">
+                        <span className="font-manrope font-bold text-[14px] text-[#2F2F2F]">
+                            {user.email?.[0].toUpperCase()}
+                        </span>
                     </div>
-                  );
-                })}
-              </div>
-            )}
-          </div>
+                    <div className="flex flex-col overflow-hidden">
+                        <span className="font-inter font-bold text-[13px] text-[#1C1917] truncate">{user.email}</span>
+                        <button onClick={() => supabase.auth.signOut()} className="font-inter text-[11px] text-[#A8A29E] text-left hover:text-[#1C1917]">Sign out</button>
+                    </div>
+                </div>
+            </aside>
+
+            {/* Main Content */}
+            <main className="flex-1 max-w-[1200px] px-6 lg:px-16 pt-32 lg:pt-16 pb-24 mx-auto w-full">
+                
+                {/* Header overview */}
+                <div className="flex flex-col xl:flex-row xl:items-end justify-between gap-8 mb-12">
+                    <div className="flex flex-col gap-2">
+                        <div className="font-inter font-bold text-[11px] uppercase tracking-[1.5px] text-[#A8A29E] mb-2">
+                            OVERVIEW / CONNECTIONS
+                        </div>
+                        <h1 className="font-manrope font-extrabold text-[40px] md:text-[48px] leading-[1.1] tracking-[-1.5px] text-[#1C1917]">
+                            Your Active Connections
+                        </h1>
+                        <div className="flex items-center gap-2 mt-2">
+                            <span className="font-inter text-[14px] text-[#5B5B5B]">Manage your created connections and statuses.</span>
+                        </div>
+                    </div>
+
+                    <div className="flex gap-4">
+                        <Link href="/datasets" className="bg-[#D1FC00] text-[#1C1917] font-inter font-bold text-[14px] px-6 py-3 rounded-full hover:bg-[#C5ED00] transition-colors flex items-center gap-2 shadow-sm">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+                            Create Connection
+                        </Link>
+                    </div>
+                </div>
+
+                {/* Tokens Table */}
+                <div className="bg-white rounded-[40px] p-8 md:p-12 shadow-[0_4px_32px_-12px_rgba(0,0,0,0.05)] border border-[#F0F0F0] flex flex-col relative overflow-hidden">
+                    {tokens.length === 0 ? (
+                        <div className="text-center py-10 flex flex-col items-center">
+                            <div className="w-16 h-16 bg-[#F6F6F6] rounded-full flex items-center justify-center mb-6">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#A8A29E" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                            </div>
+                            <h3 className="font-inter font-bold text-[18px] text-[#1C1917] mb-2">No active connections.</h3>
+                            <p className="font-inter text-[15px] text-[#5B5B5B] mb-6">You haven't requested any API tokens yet.</p>
+                            <Link href="/datasets" className="font-inter font-bold text-[14px] text-[#1C1917] underline decoration-[#D1FC00] decoration-2 underline-offset-4">Browse Datasets</Link>
+                        </div>
+                    ) : (
+                        <div className="overflow-x-auto w-full z-10">
+                            <table className="w-full text-left font-inter border-collapse min-w-[800px]">
+                                <thead>
+                                    <tr className="text-[#A8A29E] text-[11px] uppercase tracking-[1.5px] border-b border-[#F0F0F0]">
+                                        <th className="pb-4 font-bold px-4 first:pl-0">Dataset</th>
+                                        <th className="pb-4 font-bold px-4">Connection</th>
+                                        <th className="pb-4 font-bold px-4">Status</th>
+                                        <th className="pb-4 font-bold px-4">Creation Date</th>
+                                        <th className="pb-4 font-bold px-4">Expiry Date</th>
+                                        <th className="pb-4 font-bold px-4 text-right">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {tokens.map((token) => {
+                                        const urlString = `${window.location.origin}/api/datasets/${token.dataset_slug}?token=${token.token_string || token.token}`;
+                                        
+                                        return (
+                                        <tr key={token.id} className="border-b border-[#F0F0F0]/50 hover:bg-[#FAFAFA] transition-colors last:border-0">
+                                            <td className="py-5 px-4 font-bold text-[#1C1917] capitalize first:pl-0">{token.dataset_slug?.replace(/-/g, ' ')}</td>
+                                            <td className="py-5 px-4">
+                                                <div className="flex items-center gap-3">
+                                                    <code className="text-[13px] text-[#5B5B5B] font-mono bg-[#F6F6F6] px-2 py-1 rounded max-w-[200px] truncate" title={urlString}>
+                                                        {urlString}
+                                                    </code>
+                                                    <button 
+                                                        onClick={() => navigator.clipboard.writeText(urlString)}
+                                                        className="text-[#A8A29E] hover:text-[#1C1917] transition-colors p-1"
+                                                        title="Copy URL"
+                                                    >
+                                                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                            <td className="py-5 px-4">
+                                                <span className={`px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-[1px] ${token.status === 'active' ? 'bg-[#FAFFD1] text-[#516200]' : 'bg-[#F6F6F6] text-[#A8A29E]'}`}>
+                                                    {token.status}
+                                                </span>
+                                            </td>
+                                            <td className="py-5 px-4 text-[14px] text-[#5B5B5B]">
+                                                {new Date(token.created_at).toLocaleDateString()}
+                                            </td>
+                                            <td className="py-5 px-4 text-[14px] text-[#5B5B5B]">
+                                                {new Date(new Date(token.created_at).getTime() + 30 * 24 * 60 * 60 * 1000).toLocaleDateString()}
+                                            </td>
+                                            <td className="py-5 px-4 text-right">
+                                                {token.status === 'active' && (
+                                                    <button 
+                                                        onClick={() => handleRevoke(token.id)}
+                                                        className="text-red-500 hover:text-red-700 font-inter font-bold text-[12px] uppercase tracking-[1px] transition-colors"
+                                                    >
+                                                        Revoke
+                                                    </button>
+                                                )}
+                                            </td>
+                                        </tr>
+                                    )})}
+                                </tbody>
+                            </table>
+                        </div>
+                    )}
+                </div>
+
+            </main>
         </div>
-      </div>
-    </main>
-  );
+    );
 }
