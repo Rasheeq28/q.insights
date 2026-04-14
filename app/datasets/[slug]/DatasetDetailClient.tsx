@@ -166,7 +166,7 @@ export default function DatasetDetailClient({ dataset }: DatasetDetailClientProp
                                     
                                     <button 
                                         onClick={() => {
-                                            const formula = `=IMPORTDATA("${process.env.NEXT_PUBLIC_APP_URL || window.location.origin}/api/datasets/${dataset.slug}?token=${tokenString}&fields=${selectedFields.join(",")}")`;
+                                            const formula = `=IMPORTDATA("${process.env.NEXT_PUBLIC_APP_URL || window.location.origin}/api/datasets/${dataset.slug}?token=${tokenString}&fields=${selectedFields.join(",")}&format=csv")`;
                                             navigator.clipboard.writeText(formula);
                                         }}
                                         className="bg-[#D1FC00] hover:bg-white text-black font-inter font-bold text-[16px] px-10 py-4 rounded-full transition-all shadow-lg hover:shadow-[#D1FC00]/20 flex items-center gap-3 active:scale-95 group shrink-0"
@@ -178,7 +178,7 @@ export default function DatasetDetailClient({ dataset }: DatasetDetailClientProp
 
                                 <div className="bg-white/5 border border-white/10 rounded-[24px] p-8 relative group cursor-pointer hover:border-[#D1FC00]/30 transition-colors">
                                     <code className="block font-mono text-[16px] lg:text-[18px] text-[#D1FC00] leading-relaxed break-all select-all">
-                                        =IMPORTDATA("{process.env.NEXT_PUBLIC_APP_URL || (typeof window !== 'undefined' ? window.location.origin : '')}/api/datasets/{dataset.slug}?token={tokenString}&fields={selectedFields.join(",")}")
+                                        =IMPORTDATA("{process.env.NEXT_PUBLIC_APP_URL || (typeof window !== 'undefined' ? window.location.origin : '')}/api/datasets/{dataset.slug}?token={tokenString}&fields={selectedFields.join(",")}&format=csv")
                                     </code>
                                     <div className="absolute top-4 right-6 opacity-0 group-hover:opacity-100 transition-opacity">
                                         <span className="text-[10px] font-bold text-[#A8A29E] uppercase tracking-widest">Click to select all</span>

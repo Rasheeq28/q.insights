@@ -140,6 +140,34 @@ export async function GET(
     return flatItem;
   });
 
+  // --- CSV Handling ---
+  if (format === "csv") {
+    if (rows.length === 0) {
+      return new Response("", { headers: { "Content-Type": "text/csv" } });
+    }
+
+    const headers = Object.keys(rows[0]);
+    const csvContent = [
+      headers.join(","),
+      ...rows.map((row: any) => 
+        headers.map(fieldName => {
+          const value = row[fieldName] ?? "";
+          const escaped = String(value).replace(/"/g, '""');
+          return `"${escaped}"`;
+        }).join(",")
+      )
+    ].join("\n");
+
+    return new Response(csvContent, {
+      headers: {
+        "Content-Type": "text/csv",
+        "Content-Disposition": `attachment; filename="${slug}_data.csv"`,
+        "Access-Control-Allow-Origin": "*",
+      },
+    });
+  }
+
+  // --- Default JSON Handling ---
   return NextResponse.json(rows, {
     headers: {
       "Access-Control-Allow-Origin": "*",
