@@ -101,33 +101,25 @@ function SignUpForm() {
 
     if (status === "success") {
         return (
-            <div className="bg-[#FFFFFF] border border-[#1C1917]/5 py-[48px] px-[32px] sm:px-[48px] shadow-[0px_25px_50px_-12px_rgba(47,47,47,0.05)] rounded-[48px] w-full relative overflow-hidden">
-                <div className="text-center mb-8">
-                    <div className="mx-auto w-[48px] h-[48px] bg-[#D1FC00] rounded-full flex items-center justify-center mb-4">
-                        <svg className="w-[24px] h-[24px]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                        </svg>
-                    </div>
-                    <h3 className="font-manrope font-bold text-[24px] text-[#2F2F2F] tracking-[-0.6px] mb-2">Check your inbox</h3>
-                    <p className="font-inter font-normal text-[15px] text-[#5B5B5B]">
-                        Magic link sent to <strong>{email}</strong>
-                    </p>
+            <div className="bg-[#FFFFFF] border border-[#1C1917]/5 py-12 px-6 shadow-[0px_25px_50px_-12px_rgba(0,0,0,0.05)] rounded-[48px] sm:px-12 w-full text-center relative overflow-hidden">
+                <div className="mx-auto w-16 h-16 bg-[#D1FC00]/10 text-[#2F2F2F] rounded-full flex items-center justify-center mb-6">
+                    <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
                 </div>
-
-                <div className="pt-6 border-t border-[#F0F0F0] text-center">
-                    <div className="py-2 text-[24px] mb-2">🚀</div>
-                    <h4 className="font-manrope font-bold text-[18px] text-[#2F2F2F] mb-1">Success!</h4>
-                    <p className="font-inter text-[14px] text-[#5B5B5B]">
-                        Preferences saved. We&apos;ve sent a link to your email to complete your registration.
-                    </p>
-                </div>
-
-                <div className="mt-8 text-center">
+                <h3 className="text-xl font-bold text-[#2F2F2F] mb-2">Check your inbox</h3>
+                <p className="text-[#5B5B5B] font-medium leading-relaxed">
+                    Magic link sent to <strong>{email}</strong>
+                </p>
+                <p className="font-inter text-[14px] text-[#5B5B5B] mt-4 pt-4 border-t border-[#F0F0F0]">
+                    Preferences saved. We&apos;ve sent a link to your email to complete your registration.
+                </p>
+                <div className="mt-8">
                    <button 
                        onClick={() => { setStatus("idle"); setEmail(""); setInsightsSaved(false); }}
-                       className="font-inter font-bold text-[12px] text-[#A8A29E] hover:text-[#2F2F2F] transition-colors uppercase tracking-[1px]"
+                       className="text-xs font-bold text-[#A8A29E] hover:text-[#2F2F2F] transition-colors uppercase tracking-[1px]"
                    >
-                       Didn't receive it? Try again.
+                       Didn&apos;t receive it? Try again.
                    </button>
                 </div>
             </div>
@@ -135,7 +127,7 @@ function SignUpForm() {
     }
 
     return (
-        <div className="bg-[#FFFFFF] border border-[#1C1917]/5 py-[48px] px-[32px] shadow-[0px_25px_50px_-12px_rgba(47,47,47,0.05)] rounded-[48px] sm:px-[48px] w-full">
+        <div className="bg-[#FFFFFF] border border-[#1C1917]/5 py-12 px-6 shadow-[0px_25px_50px_-12px_rgba(0,0,0,0.05)] rounded-[48px] sm:px-12 w-full">
             <form onSubmit={handleMagicLinkSignUp} className="flex flex-col gap-8">
                 <div className="flex flex-col gap-1 mb-2">
                     <h4 className="font-manrope font-bold text-[18px] text-[#2F2F2F]">Help us tailor your experience</h4>
@@ -202,9 +194,9 @@ function SignUpForm() {
                 </div>
             </form>
 
-            <div className="mt-8 text-center text-sm pt-6 border-t border-[#E7E5E4]">
+            <div className="mt-8 text-center text-sm pt-6 border-t border-[#F0F0F0]">
                 <span className="font-inter font-normal text-[14px] text-[#5B5B5B]">Already have an account? </span>
-                <Link href="/signin" className="font-inter font-bold text-[14px] text-[#2F2F2F] hover:text-[#5B5B5B] transition-colors underline">
+                <Link href="/signin" className="font-inter font-bold text-[14px] text-[#2F2F2F] hover:underline transition-colors">
                     Log in
                 </Link>
             </div>

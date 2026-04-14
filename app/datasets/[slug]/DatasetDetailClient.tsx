@@ -153,33 +153,47 @@ export default function DatasetDetailClient({ dataset }: DatasetDetailClientProp
                         <h2 className="font-manrope font-bold text-[28px] text-[#1C1917] tracking-tight">Configure Your Connection</h2>
                         
                         {tokenString ? (
-                            <div className="flex flex-col gap-6">
-                                <div className="bg-[#1C1917] rounded-[24px] p-8 overflow-hidden relative group">
-                                    <p className="font-inter font-bold text-[10px] uppercase tracking-[1.2px] text-[#A8A29E] text-left mb-2">Your Live URL</p>
-                                    <code className="block font-mono text-[14px] text-[#D1FC00] text-left break-all select-all">
-                                        {typeof window !== 'undefined' ? window.location.origin : ''}/api/datasets/{dataset.slug}?token={tokenString}&fields={selectedFields.join(",")}
-                                    </code>
-                                    <p className="font-inter text-[12px] text-[#A8A29E] text-left mt-4 border-t border-white/10 pt-4 leading-[20px]">
-                                        Paste this link into your preferred tool. You can view your active connections in the Dashboard.
-                                    </p>
+                            <div className="bg-[#1C1917] rounded-[32px] p-8 lg:p-12 border-2 border-[#D1FC00] shadow-[0_8px_32px_-12px_rgba(209,252,0,0.3)] flex flex-col gap-8 animate-in zoom-in-95 duration-500">
+                                <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
+                                    <div className="flex flex-col gap-2">
+                                        <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#D1FC00]/10 rounded-full w-fit">
+                                            <span className="w-2 h-2 rounded-full bg-[#D1FC00] animate-pulse"></span>
+                                            <span className="font-inter font-bold text-[10px] text-[#D1FC00] uppercase tracking-[1px]">Connection Live</span>
+                                        </div>
+                                        <h3 className="font-manrope font-bold text-[32px] text-white tracking-tight">Your Dataset Formula</h3>
+                                        <p className="font-inter text-[15px] text-[#A8A29E]">Copy this into cell <strong>A1</strong> of Google Sheets or Excel to track live data.</p>
+                                    </div>
+                                    
+                                    <button 
+                                        onClick={() => {
+                                            const formula = `=IMPORTDATA("${process.env.NEXT_PUBLIC_APP_URL || window.location.origin}/api/datasets/${dataset.slug}?token=${tokenString}&fields=${selectedFields.join(",")}")`;
+                                            navigator.clipboard.writeText(formula);
+                                        }}
+                                        className="bg-[#D1FC00] hover:bg-white text-black font-inter font-bold text-[16px] px-10 py-4 rounded-full transition-all shadow-lg hover:shadow-[#D1FC00]/20 flex items-center gap-3 active:scale-95 group shrink-0"
+                                    >
+                                        <span>Copy Formula</span>
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="group-hover:rotate-12 transition-transform"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                                    </button>
                                 </div>
 
-                                <div className="bg-[#FAFAFA] rounded-[24px] p-8 border border-[#E7E5E4]">
-                                    <p className="font-inter font-bold text-[10px] uppercase tracking-[1.2px] text-[#A8A29E] text-left mb-3">Copy Formula (Sheets / Excel)</p>
-                                    <div className="flex items-center gap-4 bg-white border border-[#E7E5E4] rounded-xl p-4">
-                                        <code className="flex-1 font-mono text-[13px] text-[#1C1917] truncate">
-                                            =IMPORTDATA("{typeof window !== 'undefined' ? window.location.origin : ''}/api/datasets/{dataset.slug}?token={tokenString}&fields={selectedFields.join(",")}")
-                                        </code>
-                                        <button 
-                                            onClick={() => navigator.clipboard.writeText(`=IMPORTDATA("${window.location.origin}/api/datasets/${dataset.slug}?token=${tokenString}&fields=${selectedFields.join(",")}")`)}
-                                            className="bg-black text-white text-[12px] font-bold px-4 py-2 rounded-full hover:bg-black/80 transition-all shrink-0"
-                                        >
-                                            Copy Formula
-                                        </button>
+                                <div className="bg-white/5 border border-white/10 rounded-[24px] p-8 relative group cursor-pointer hover:border-[#D1FC00]/30 transition-colors">
+                                    <code className="block font-mono text-[16px] lg:text-[18px] text-[#D1FC00] leading-relaxed break-all select-all">
+                                        =IMPORTDATA("{process.env.NEXT_PUBLIC_APP_URL || (typeof window !== 'undefined' ? window.location.origin : '')}/api/datasets/{dataset.slug}?token={tokenString}&fields={selectedFields.join(",")}")
+                                    </code>
+                                    <div className="absolute top-4 right-6 opacity-0 group-hover:opacity-100 transition-opacity">
+                                        <span className="text-[10px] font-bold text-[#A8A29E] uppercase tracking-widest">Click to select all</span>
                                     </div>
-                                    <p className="font-inter text-[12px] text-[#5B5B5B] mt-3 italic">
-                                        Use this formula directly in cell A1 of Google Sheets or Excel.
-                                    </p>
+                                </div>
+
+                                <div className="flex flex-col sm:flex-row gap-6 pt-4 border-t border-white/10 mt-2">
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-[18px]">📊</div>
+                                        <p className="text-[13px] text-[#A8A29E]">Works in <strong>Google Sheets</strong></p>
+                                    </div>
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-[18px]">📗</div>
+                                        <p className="text-[13px] text-[#A8A29E]">Works in <strong>Microsoft Excel</strong></p>
+                                    </div>
                                 </div>
                             </div>
                         ) : (
