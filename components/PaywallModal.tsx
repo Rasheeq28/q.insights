@@ -84,7 +84,7 @@ export default function PaywallModal({ isOpen, onClose, dataset, actionType, sel
 
     return (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
-            <div className="bg-[#FFFFFF] w-full max-w-[500px] rounded-[48px] p-[40px] shadow-[0px_25px_50px_-12px_rgba(0,0,0,0.25)] border border-[#1C1917]/5 relative flex flex-col gap-6">
+            <div className="bg-[#FFFFFF] w-full max-w-[500px] rounded-[32px] md:rounded-[48px] p-6 sm:p-10 shadow-[0px_25px_50px_-12px_rgba(0,0,0,0.25)] border border-[#1C1917]/5 relative flex flex-col gap-6">
                 
                 <button 
                     onClick={onClose}
@@ -107,7 +107,7 @@ export default function PaywallModal({ isOpen, onClose, dataset, actionType, sel
                         <div className="w-16 h-16 bg-[#F1F1F1] rounded-full flex items-center justify-center mb-2">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#A8A29E" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
                         </div>
-                        <h2 className="font-manrope font-bold text-[32px] leading-[36px] tracking-[-0.6px] text-[#2F2F2F]">Create a free account to keep using this</h2>
+                        <h2 className="font-manrope font-bold text-[24px] sm:text-[32px] leading-[30px] sm:leading-[36px] tracking-[-0.6px] text-[#2F2F2F]">Create a free account to keep using this</h2>
                         <p className="font-inter text-[16px] text-[#5B5B5B]">
                             Get access to live data in seconds.
                         </p>
@@ -123,7 +123,7 @@ export default function PaywallModal({ isOpen, onClose, dataset, actionType, sel
                 {status === "checkout" && (
                     <div className="flex flex-col gap-6 py-2">
                         <div className="flex flex-col gap-2">
-                            <h2 className="font-manrope font-bold text-[32px] leading-[36px] tracking-[-0.6px] text-[#2F2F2F]">Follow this data live</h2>
+                            <h2 className="font-manrope font-bold text-[24px] sm:text-[32px] leading-[30px] sm:leading-[36px] tracking-[-0.6px] text-[#2F2F2F]">Follow this data live</h2>
                             <p className="font-inter text-[16px] text-[#5B5B5B]">
                                 Get a lifetime connection to the <strong>{dataset.title}</strong> feed. Automatically updates in Sheets and Excel.
                             </p>
@@ -160,7 +160,7 @@ export default function PaywallModal({ isOpen, onClose, dataset, actionType, sel
                         </div>
                         
                         <div className="flex flex-col gap-2 w-full">
-                            <h2 className="font-manrope font-bold text-[32px] leading-[36px] tracking-[-0.6px] text-[#2F2F2F]">Your connection is ready!</h2>
+                            <h2 className="font-manrope font-bold text-[24px] sm:text-[32px] leading-[30px] sm:leading-[36px] tracking-[-0.6px] text-[#2F2F2F]">Your connection is ready!</h2>
                             <p className="font-inter text-[16px] text-[#5B5B5B]">
                                 Use the link below to follow your live data feed.
                             </p>

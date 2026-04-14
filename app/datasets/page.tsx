@@ -46,11 +46,11 @@ export default function DatasetsPage() {
     });
 
     return (
-        <main className="min-h-screen pt-[160px] font-inter bg-[#FAFAFA] pb-24 text-[#1C1917]">
+        <main className="min-h-screen pt-[100px] md:pt-[160px] font-inter bg-[#FAFAFA] pb-24 text-[#1C1917]">
             {/* ── HEADER ─────────────────────────────────────────────────── */}
-            <section className="flex flex-col items-center px-6 md:px-12 gap-6 max-w-[800px] mx-auto text-center mb-[80px]">
-                <h1 className="font-manrope font-extrabold text-[56px] md:text-[72px] leading-[1.05] tracking-[-2.5px] text-[#1C1917]">
-                    The Data <span className="bg-[#D1FC00] px-4 py-1 pb-2">Catalog.</span>
+            <section className="flex flex-col items-center px-6 md:px-12 gap-6 max-w-[800px] mx-auto text-center mb-10 md:mb-[80px]">
+                <h1 className="font-manrope font-extrabold text-[42px] sm:text-[56px] md:text-[72px] leading-[1.05] tracking-[-1.5px] md:tracking-[-2.5px] text-[#1C1917]">
+                    The Data <span className="bg-[#D1FC00] px-3 md:px-4 py-1 pb-2">Catalog.</span>
                 </h1>
                 <p className="font-inter text-[18px] text-[#5B5B5B] max-w-[600px] leading-[30px]">
                     Premium datasets curated for precision. Simple, clean, and ready for your next project.
@@ -112,11 +112,11 @@ export default function DatasetsPage() {
 
             {/* ── CUSTOM CTA BANNER ────────────────────────────────────────── */}
             <section className="px-6 md:px-12 pb-12 flex justify-center">
-                <div className="w-full max-w-[1000px] bg-[#0A0A0A] rounded-[48px] p-[60px] md:p-[80px] flex flex-col items-center text-center">
-                    <h2 className="font-manrope font-extrabold text-[40px] md:text-[48px] leading-[1.1] tracking-[-1.5px] text-white mb-6">
+                <div className="w-full max-w-[1000px] bg-[#0A0A0A] rounded-[32px] md:rounded-[48px] p-10 md:p-[80px] flex flex-col items-center text-center">
+                    <h2 className="font-manrope font-extrabold text-[32px] md:text-[48px] leading-[1.1] tracking-[-1px] md:tracking-[-1.5px] text-white mb-6">
                         Need something custom?
                     </h2>
-                    <p className="font-inter text-[16px] leading-[28px] text-white/70 max-w-[500px] mb-8">
+                    <p className="font-inter text-[14px] md:text-[16px] leading-[24px] md:leading-[28px] text-white/70 max-w-[500px] mb-8">
                         We can engineer a custom scraping pipeline for any source. Get the exact data you need.
                     </p>
                     <Link 

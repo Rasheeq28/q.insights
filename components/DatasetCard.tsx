@@ -3,7 +3,7 @@ import { Dataset } from "@/lib/types";
 
 export function DatasetCard({ dataset }: { dataset: Dataset }) {
     return (
-        <article className="bg-white rounded-[40px] border border-[#F0F0F0] p-[40px] flex flex-col justify-between items-start h-[360px] shadow-[0_4px_24px_-12px_rgba(0,0,0,0.05)] transition-all hover:shadow-[0_8px_32px_-16px_rgba(0,0,0,0.1)] hover:-translate-y-1">
+        <article className="bg-white rounded-[32px] md:rounded-[40px] border border-[#F0F0F0] p-6 sm:p-8 md:p-[40px] flex flex-col justify-between items-start h-full min-h-[340px] md:h-[360px] shadow-[0_4px_24px_-12px_rgba(0,0,0,0.05)] transition-all hover:shadow-[0_8px_32px_-16px_rgba(0,0,0,0.1)] hover:-translate-y-1">
             <div className="flex flex-col gap-4 w-full">
                 <h3 className="font-manrope font-bold text-[22px] tracking-[-0.5px] text-[#1C1917] leading-tight">
                     {dataset.title}

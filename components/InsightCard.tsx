@@ -118,7 +118,7 @@ export function InsightCard({ card }: { card: InsightCardData }) {
   };
 
   return (
-    <div className="flex flex-col bg-white border border-[#E7E5E4] rounded-[32px] p-7 transition-all hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)] hover:border-[#D1FC00] h-full">
+    <div className="flex flex-col bg-white border border-[#E7E5E4] rounded-[32px] p-5 sm:p-7 transition-all hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)] hover:border-[#D1FC00] h-full">
       
       {/* Header Info */}
       <div className="flex flex-col gap-1 mb-6">

@@ -99,11 +99,11 @@ export default async function Home() {
     <main className="min-h-screen pt-[80px] font-inter bg-[#FAFAFA] text-[#1C1917]">
       
       {/* ── HERO ─────────────────────────────────────────────────────────── */}
-      <section className="flex flex-col items-center text-center px-6 md:px-12 pt-[120px] pb-[80px] w-full max-w-[1000px] mx-auto">
-        <h1 className="font-manrope font-extrabold text-[56px] md:text-[76px] leading-[1.05] tracking-[-2.5px] text-[#1C1917] mb-6">
+      <section className="flex flex-col items-center text-center px-6 md:px-12 pt-[60px] md:pt-[120px] pb-[40px] md:pb-[80px] w-full max-w-[1000px] mx-auto">
+        <h1 className="font-manrope font-extrabold text-[42px] sm:text-[56px] md:text-[76px] leading-[1.05] tracking-[-1.5px] md:tracking-[-2.5px] text-[#1C1917] mb-6">
           Stop Copying Data.
         </h1>
-        <p className="font-inter text-[20px] leading-[32px] text-[#5B5B5B] max-w-[600px] mb-10">
+        <p className="font-inter text-[18px] md:text-[20px] leading-[28px] md:leading-[32px] text-[#5B5B5B] max-w-[600px] mb-10">
           Get it live in Excel/Google Sheets
         </p>
 
@@ -191,12 +191,12 @@ export default async function Home() {
 
       {/* ── BLACK CTA BOX ─────────────────────────────────────────────────── */}
       <section className="px-6 md:px-12 py-12 flex justify-center">
-        <div className="max-w-[1280px] w-full bg-[#0A0A0A] rounded-[48px] p-[60px] md:p-[80px] flex flex-col items-center justify-center text-center gap-12">
+        <div className="max-w-[1280px] w-full bg-[#0A0A0A] rounded-[40px] md:rounded-[48px] p-10 md:p-[80px] flex flex-col items-center justify-center text-center gap-12">
             <div className="max-w-[600px] flex flex-col items-center">
-                <h2 className="font-manrope font-extrabold text-[40px] md:text-[48px] leading-[1.1] tracking-[-1.5px] text-white mb-6">
+                <h2 className="font-manrope font-extrabold text-[32px] md:text-[48px] leading-[1.1] tracking-[-1px] md:tracking-[-1.5px] text-white mb-6">
                     Data that moves with you.
                 </h2>
-                <p className="font-inter text-[16px] leading-[26px] text-white/70 mb-8">
+                <p className="font-inter text-[14px] md:text-[16px] leading-[22px] md:leading-[26px] text-white/70 mb-8">
                     Our live-sync engine ensures your spreadsheets are never out of date. Connect once, stay updated forever.
                 </p>
                 <Link
@@ -231,16 +231,16 @@ export default async function Home() {
 
       {/* ── NEON BOTTOM BANNER ─────────────────────────────────────────────── */}
       <section className="px-6 md:px-12 pb-24 flex justify-center">
-        <div className="max-w-[1280px] w-full bg-[#D1FC00] rounded-[48px] p-[80px] flex flex-col items-center text-center">
-            <h2 className="font-manrope font-extrabold text-[48px] md:text-[64px] leading-[1.05] tracking-[-2px] text-[#1C1917] mb-6 max-w-[800px]">
+        <div className="max-w-[1280px] w-full bg-[#D1FC00] rounded-[40px] md:rounded-[48px] p-10 md:p-[80px] flex flex-col items-center text-center">
+            <h2 className="font-manrope font-extrabold text-[36px] sm:text-[48px] md:text-[64px] leading-[1.05] tracking-[-1px] md:tracking-[-2px] text-[#1C1917] mb-6 max-w-[800px]">
                 Make a request to get the data you need.
             </h2>
-            <p className="font-inter text-[18px] leading-[28px] text-[#4C5D00] max-w-[600px] mb-10">
+            <p className="font-inter text-[15px] md:text-[18px] leading-[24px] md:leading-[28px] text-[#4C5D00] max-w-[600px] mb-10">
                 Our team builds private extraction pipelines for the most complex enterprise requirements.
             </p>
             <Link
                 href="/request"
-                className="bg-[#1C1917] text-white font-inter font-bold text-[16px] px-[40px] py-[20px] rounded-full hover:bg-black transition-colors shadow-xl shadow-black/10"
+                className="bg-[#1C1917] text-white font-inter font-bold text-[15px] md:text-[16px] px-[32px] py-[16px] md:px-[40px] md:py-[20px] rounded-full hover:bg-black transition-colors shadow-xl shadow-black/10"
             >
                 Request a Custom Build
             </Link>
