@@ -45,6 +45,14 @@ export async function POST(request: Request) {
     // --- Build simple token ---
     const token = "qlabs_" + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 
+    // --- Ensure User Exists in Public Users Table ---
+    // Sometimes the Supabase auth trigger fails to copy the user to public.users,
+    // which causes the foreign key constraint on api_tokens to fail.
+    await supabase.from("users").upsert({
+      id: user.id,
+      email: user.email || `unknown-${user.id}@example.com`
+    });
+
     // --- Insert Token into Dashboard Tracking Table ---
     const { error: insertError } = await supabase.from("api_tokens").insert({
       user_id: user.id,
