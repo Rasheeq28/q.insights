@@ -35,7 +35,6 @@ export default function TopNavbar() {
         <Link href="/" className="font-inter font-medium text-[15px] text-[#5B5B5B] hover:text-[#1C1917] transition-colors whitespace-nowrap">Home Page</Link>
         <Link href="/datasets" className="font-inter font-medium text-[15px] text-[#5B5B5B] hover:text-[#1C1917] transition-colors whitespace-nowrap">Datasets</Link>
         <Link href="/request" className="font-inter font-medium text-[15px] text-[#5B5B5B] hover:text-[#1C1917] transition-colors whitespace-nowrap">Custom Scraping</Link>
-        <Link href="/pricing" className="font-inter font-medium text-[15px] text-[#5B5B5B] hover:text-[#1C1917] transition-colors whitespace-nowrap">Pricing</Link>
         <Link href="/feedback" className="font-inter font-medium text-[15px] text-[#5B5B5B] hover:text-[#1C1917] transition-colors whitespace-nowrap">Feedback</Link>
         {session && (
             <Link href="/dashboard" className="font-inter font-medium text-[15px] text-[#5B5B5B] hover:text-[#1C1917] transition-colors whitespace-nowrap">Dashboard</Link>
@@ -74,7 +73,6 @@ export default function TopNavbar() {
             <Link href="/" onClick={() => setIsMenuOpen(false)} className="text-[18px] font-bold text-[#1C1917]">Home</Link>
             <Link href="/datasets" onClick={() => setIsMenuOpen(false)} className="text-[18px] font-bold text-[#1C1917]">Datasets</Link>
             <Link href="/request" onClick={() => setIsMenuOpen(false)} className="text-[18px] font-bold text-[#1C1917]">Custom Scraping</Link>
-            <Link href="/pricing" onClick={() => setIsMenuOpen(false)} className="text-[18px] font-bold text-[#1C1917]">Pricing</Link>
             <Link href="/feedback" onClick={() => setIsMenuOpen(false)} className="text-[18px] font-bold text-[#1C1917]">Feedback</Link>
             {session && (
               <Link href="/dashboard" onClick={() => setIsMenuOpen(false)} className="text-[18px] font-bold text-[#1C1917]">Dashboard</Link>

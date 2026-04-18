@@ -48,12 +48,6 @@ export default function Navbar() {
               >
                 Custom Data
               </Link>
-              <Link
-                href="/pricing"
-                className="text-slate-400 hover:text-white transition-colors border-transparent inline-flex items-center px-1 pt-1 text-sm font-semibold"
-              >
-                Pricing
-              </Link>
             </div>
           </div>
           
@@ -100,9 +94,6 @@ export default function Navbar() {
             </Link>
             <Link href="/request" onClick={() => setIsMenuOpen(false)} className="text-[18px] font-bold text-white hover:text-[#D1FC00] transition-colors">
               Custom Data
-            </Link>
-            <Link href="/pricing" onClick={() => setIsMenuOpen(false)} className="text-[18px] font-bold text-white hover:text-[#D1FC00] transition-colors">
-              Pricing
             </Link>
             <div className="h-px bg-white/5 my-2"></div>
             {session ? (

@@ -266,7 +266,6 @@ export default async function Home() {
                 <div className="flex flex-col gap-4">
                     <span className="font-inter font-bold text-[11px] uppercase tracking-[1.5px] text-[#1C1917]">Platform</span>
                     <Link href="/datasets" className="font-inter text-[13px] text-[#5B5B5B] hover:text-[#1C1917]">Datasets</Link>
-                    <Link href="/pricing" className="font-inter text-[13px] text-[#5B5B5B] hover:text-[#1C1917]">Pricing</Link>
                     <Link href="#" className="font-inter text-[13px] text-[#5B5B5B] hover:text-[#1C1917]">API Docs</Link>
                 </div>
                 <div className="flex flex-col gap-4">
