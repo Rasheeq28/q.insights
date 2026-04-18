@@ -128,9 +128,15 @@ export async function GET(
     if (flatItem.date !== undefined && flatItem.date !== null) {
       const numDate = Number(flatItem.date);
       if (!isNaN(numDate) && numDate > 20000 && numDate < 100000) {
-        // Excel stores dates as days since 1900-01-01. 25569 is offset to 1970-01-01 (UNIX epoch).
         const date = new Date(Math.round((numDate - 25569) * 86400 * 1000));
         flatItem.date = date.toISOString().split("T")[0];
+      }
+      
+      // If date is perfectly YYYY-MM-DD, reformat to MM/DD/YYYY so Google Sheets IMPORTDATA
+      // automatically applies the visual Date mask rather than defaulting to raw integer serials.
+      if (typeof flatItem.date === "string" && flatItem.date.match(/^\d{4}-\d{2}-\d{2}$/)) {
+        const [y, m, d] = flatItem.date.split("-");
+        flatItem.date = `${m}/${d}/${y}`;
       }
     }
 
