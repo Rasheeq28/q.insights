@@ -101,18 +101,30 @@ export default function DatasetDetailClient({ dataset }: DatasetDetailClientProp
             return;
         }
 
-        const generatedToken = "qlabs_" + Math.random().toString(36).substring(2, 15);
-        const { error } = await supabase.from("api_tokens").insert({
-            user_id: user.id,
-            dataset_slug: dataset.slug,
-            token_string: generatedToken,
-            filters: { columns: selectedFields },
-            status: "active"
-        });
+        try {
+            const { data: { session } } = await supabase.auth.getSession();
+            if (!session) throw new Error("No session");
+
+            const response = await fetch("/api/generate-token", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${session.access_token}`
+                },
+                body: JSON.stringify({
+                    dataset_slug: dataset.slug,
+                    filters: { columns: selectedFields }
+                })
+            });
+
+            if (!response.ok) throw new Error(await response.text());
+            
+            const result = await response.json();
+            setTokenString(result.token);
+        } catch (error) {
+            console.error("Token generation fail:", error);
+        }
         
-        if (error) console.error("Token generation mock fail:", error);
-        
-        setTokenString(generatedToken);
         setProcessing(false);
     };
 

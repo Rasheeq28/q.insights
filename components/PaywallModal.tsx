@@ -59,20 +59,32 @@ export default function PaywallModal({ isOpen, onClose, dataset, actionType, sel
 
 
             // Logic for API token generation
-            const generatedToken = "qlabs_" + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-
             if (user) {
-                const { error } = await supabase.from("api_tokens").insert({
-                    user_id: user.id,
-                    dataset_slug: dataset.slug,
-                    token_string: generatedToken,
-                    filters: {},
-                    status: "active"
+                const { data: { session } } = await supabase.auth.getSession();
+                if (!session) throw new Error("No session active");
+
+                const response = await fetch("/api/generate-token", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${session.access_token}`
+                    },
+                    body: JSON.stringify({
+                        dataset_slug: dataset.slug,
+                        filters: { columns: selectedFields }
+                    })
                 });
-                if (error) console.error("Token insert failed, but resolving for MVP demo:", error);
+
+                if (!response.ok) {
+                    throw new Error(await response.text());
+                }
+
+                const result = await response.json();
+                setTokenString(result.token);
+            } else {
+                setTokenString("qlabs_" + Math.random().toString(36).substring(2, 15));
             }
 
-            setTokenString(generatedToken);
             setStatus("success");
         } catch (err) {
             console.error(err);
