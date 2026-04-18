@@ -39,6 +39,10 @@ const FEATURE_CARDS = [
 ];
 
 export default async function Home() {
+  // Check if user is signed in
+  const { data: { user } } = await supabase.auth.getUser();
+  const isSignedIn = !!user;
+
   // Fetch active insight cards to show real, live data summaries
   const { data: cards } = await supabase
     .from('insight_cards')
@@ -113,10 +117,10 @@ export default async function Home() {
 
             <div className="flex flex-col sm:flex-row gap-4 items-center lg:items-start">
               <Link
-                href="/signup"
+                href={isSignedIn ? "/datasets" : "/signup"}
                 className="bg-[#D1FC00] text-[#1C1917] font-inter font-bold text-[15px] px-[28px] py-[14px] rounded-full hover:bg-[#C5ED00] transition-colors"
               >
-                Try for Free
+                {isSignedIn ? 'Explore Datasets' : 'Try for Free'}
               </Link>
               <Link
                 href="#how-it-works"
