@@ -3,6 +3,7 @@ import Image from 'next/image';
 import type { Metadata } from 'next';
 import { supabase } from '@/lib/supabase';
 import { fetchInsightData, InsightCardConfig } from '@/lib/insights';
+import HeroCTA from '@/components/HeroCTA';
 
 export const dynamic = 'force-dynamic';
 
@@ -39,9 +40,6 @@ const FEATURE_CARDS = [
 ];
 
 export default async function Home() {
-  // Check if user is signed in
-  const { data: { user } } = await supabase.auth.getUser();
-  const isSignedIn = !!user;
 
   // Fetch active insight cards to show real, live data summaries
   const { data: cards } = await supabase
@@ -115,20 +113,7 @@ export default async function Home() {
               Get it live in Excel/Google Sheets
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 items-center lg:items-start">
-              <Link
-                href={isSignedIn ? "/datasets" : "/signup"}
-                className="bg-[#D1FC00] text-[#1C1917] font-inter font-bold text-[15px] px-[28px] py-[14px] rounded-full hover:bg-[#C5ED00] transition-colors"
-              >
-                {isSignedIn ? 'Explore Datasets' : 'Try for Free'}
-              </Link>
-              <Link
-                href="#how-it-works"
-                className="bg-[#F0F0F0] text-[#1C1917] font-inter font-bold text-[15px] px-[28px] py-[14px] rounded-full hover:bg-[#E2E2E2] transition-colors"
-              >
-                How it works
-              </Link>
-            </div>
+            <HeroCTA />
           </div>
 
           {/* Right — Demo Video */}
