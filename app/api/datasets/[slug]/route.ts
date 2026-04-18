@@ -123,6 +123,17 @@ export async function GET(
       flatItem.category = mapper?.category ?? "";
       delete flatItem.mapper;
     }
+    
+    // Fix Excel numeric date formatting (e.g., 46121 -> "2026-04-10")
+    if (flatItem.date !== undefined && flatItem.date !== null) {
+      const numDate = Number(flatItem.date);
+      if (!isNaN(numDate) && numDate > 20000 && numDate < 100000) {
+        // Excel stores dates as days since 1900-01-01. 25569 is offset to 1970-01-01 (UNIX epoch).
+        const date = new Date(Math.round((numDate - 25569) * 86400 * 1000));
+        flatItem.date = date.toISOString().split("T")[0];
+      }
+    }
+
     // Remove internal database IDs
     delete flatItem.id;
     delete flatItem.mapper_id;
