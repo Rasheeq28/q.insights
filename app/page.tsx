@@ -98,71 +98,76 @@ export default async function Home() {
   return (
     <main className="min-h-screen pt-[80px] font-inter bg-[#FAFAFA] text-[#1C1917]">
       
-      {/* ── HERO ─────────────────────────────────────────────────────────── */}
-      <section className="flex flex-col items-center text-center px-6 md:px-12 pt-[60px] md:pt-[120px] pb-[40px] md:pb-[80px] w-full max-w-[1000px] mx-auto">
-        <h1 className="font-manrope font-extrabold text-[42px] sm:text-[56px] md:text-[76px] leading-[1.05] tracking-[-1.5px] md:tracking-[-2.5px] text-[#1C1917] mb-6">
-          Stop Copying Data.
-        </h1>
-        <p className="font-inter text-[18px] md:text-[20px] leading-[28px] md:leading-[32px] text-[#5B5B5B] max-w-[600px] mb-10">
-          Get it live in Excel/Google Sheets
-        </p>
+      {/* ── HERO + DEMO VIDEO ────────────────────────────────────────────── */}
+      <section className="px-6 md:px-12 pt-[40px] md:pt-[80px] pb-[40px] md:pb-[60px] flex justify-center">
+        <div className="max-w-[1280px] w-full flex flex-col lg:flex-row items-center gap-10 lg:gap-16">
+          
+          {/* Left — Hero Text */}
+          <div className="flex flex-col items-center lg:items-start text-center lg:text-left lg:w-[45%] shrink-0">
+            <h1 className="font-manrope font-extrabold text-[38px] sm:text-[48px] lg:text-[60px] leading-[1.05] tracking-[-1.5px] lg:tracking-[-2px] text-[#1C1917] mb-5">
+              Stop Copying Data.
+            </h1>
+            <p className="font-inter text-[17px] lg:text-[19px] leading-[28px] lg:leading-[30px] text-[#5B5B5B] max-w-[440px] mb-8">
+              Get it live in Excel/Google Sheets
+            </p>
 
-        <div className="flex flex-col sm:flex-row gap-4 items-center justify-center">
-            <Link
-              href="/signup"
-              className="bg-[#D1FC00] text-[#1C1917] font-inter font-bold text-[16px] px-[32px] py-[16px] rounded-full hover:bg-[#C5ED00] transition-colors"
-            >
-              Try for Free
-            </Link>
-            <Link
-              href="#how-it-works"
-              className="bg-[#F0F0F0] text-[#1C1917] font-inter font-bold text-[16px] px-[32px] py-[16px] rounded-full hover:bg-[#E2E2E2] transition-colors"
-            >
-              How it works
-            </Link>
-        </div>
-      </section>
-
-      {/* ── DEMO VIDEO ──────────────────────────────────────────────────── */}
-      <section className="px-4 sm:px-6 md:px-12 pb-12 md:pb-20 flex justify-center">
-        <div className="max-w-[1080px] w-full">
-          <div
-            id="demo-video"
-            className="relative w-full rounded-[20px] sm:rounded-[28px] md:rounded-[36px] overflow-hidden bg-gradient-to-br from-[#1C1917] via-[#2A2825] to-[#1C1917] shadow-[0_8px_48px_-16px_rgba(0,0,0,0.25)]"
-            style={{ aspectRatio: '16 / 9' }}
-          >
-            {/* Video — drop your file at public/demo.mp4 */}
-            <video
-              className="absolute inset-0 w-full h-full object-cover"
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="auto"
-              poster=""
-            >
-              <source src="/demo.mp4" type="video/mp4" />
-              <source src="/demo.webm" type="video/webm" />
-            </video>
-
-            {/* Fallback shown while video loads / if no file yet */}
-            <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-[1]">
-              {/* Subtle grid pattern */}
-              <div
-                className="absolute inset-0 opacity-[0.04]"
-                style={{
-                  backgroundImage: 'linear-gradient(rgba(255,255,255,.3) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.3) 1px, transparent 1px)',
-                  backgroundSize: '40px 40px',
-                }}
-              />
-              {/* Accent glow */}
-              <div className="w-[200px] h-[200px] sm:w-[280px] sm:h-[280px] md:w-[360px] md:h-[360px] rounded-full bg-[#D1FC00] opacity-[0.06] blur-[100px] absolute" />
-              {/* Loading shimmer text */}
-              <span className="font-inter font-semibold text-[12px] sm:text-[13px] text-white/30 tracking-[1px] uppercase animate-pulse z-10">
-                Demo loading…
-              </span>
+            <div className="flex flex-col sm:flex-row gap-4 items-center lg:items-start">
+              <Link
+                href="/signup"
+                className="bg-[#D1FC00] text-[#1C1917] font-inter font-bold text-[15px] px-[28px] py-[14px] rounded-full hover:bg-[#C5ED00] transition-colors"
+              >
+                Try for Free
+              </Link>
+              <Link
+                href="#how-it-works"
+                className="bg-[#F0F0F0] text-[#1C1917] font-inter font-bold text-[15px] px-[28px] py-[14px] rounded-full hover:bg-[#E2E2E2] transition-colors"
+              >
+                How it works
+              </Link>
             </div>
           </div>
+
+          {/* Right — Demo Video */}
+          <div className="w-full lg:w-[55%]">
+            <div
+              id="demo-video"
+              className="relative w-full rounded-[16px] sm:rounded-[24px] lg:rounded-[28px] overflow-hidden bg-gradient-to-br from-[#1C1917] via-[#2A2825] to-[#1C1917] shadow-[0_8px_48px_-16px_rgba(0,0,0,0.25)]"
+              style={{ aspectRatio: '16 / 9' }}
+            >
+              {/* Video — drop your file at public/demo.mp4 */}
+              <video
+                className="absolute inset-0 w-full h-full object-cover"
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="auto"
+                poster=""
+              >
+                <source src="/demo.mp4" type="video/mp4" />
+                <source src="/demo.webm" type="video/webm" />
+              </video>
+
+              {/* Fallback shown while video loads / if no file yet */}
+              <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-[1]">
+                {/* Subtle grid pattern */}
+                <div
+                  className="absolute inset-0 opacity-[0.04]"
+                  style={{
+                    backgroundImage: 'linear-gradient(rgba(255,255,255,.3) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.3) 1px, transparent 1px)',
+                    backgroundSize: '40px 40px',
+                  }}
+                />
+                {/* Accent glow */}
+                <div className="w-[200px] h-[200px] sm:w-[280px] sm:h-[280px] lg:w-[320px] lg:h-[320px] rounded-full bg-[#D1FC00] opacity-[0.06] blur-[100px] absolute" />
+                {/* Loading shimmer text */}
+                <span className="font-inter font-semibold text-[12px] sm:text-[13px] text-white/30 tracking-[1px] uppercase animate-pulse z-10">
+                  Demo loading…
+                </span>
+              </div>
+            </div>
+          </div>
+
         </div>
       </section>
 
