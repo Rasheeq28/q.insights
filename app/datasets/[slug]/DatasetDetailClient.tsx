@@ -271,7 +271,11 @@ export default function DatasetDetailClient({ dataset }: DatasetDetailClientProp
                                     {limitReached ? (
                                         <div className="bg-red-50 border border-red-200 text-red-700 p-4 rounded-xl mb-6">
                                             <p className="font-inter font-bold text-[13px] mb-1">Limit Reached</p>
-                                            <p className="font-inter text-[12px]">You have already generated 2 free connections. Email me at <span className="select-all font-mono font-bold mx-1 px-1 py-0.5 bg-red-100 rounded text-red-900">rasheeqferdous28@gmail.com</span> for more dataset connections.</p>
+                                            <p className="font-inter text-[13px] leading-relaxed mt-2">
+                                                You have already generated 2 free connections. Email me at<br/>
+                                                <span className="select-all font-mono font-bold px-3 py-1.5 bg-[#D1FC00] rounded-md text-black inline-block mt-2 mb-1 shadow-sm border border-[#C5ED00]">rasheeqferdous28@gmail.com</span><br/>
+                                                for more dataset connections.
+                                            </p>
                                         </div>
                                     ) : (
                                         <p className="font-inter text-[14px] text-[#5B5B5B] mb-8">
