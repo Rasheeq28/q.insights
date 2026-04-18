@@ -132,11 +132,13 @@ export async function GET(
         flatItem.date = date.toISOString().split("T")[0];
       }
       
-      // If date is perfectly YYYY-MM-DD, reformat to MM/DD/YYYY so Google Sheets IMPORTDATA
-      // automatically applies the visual Date mask rather than defaulting to raw integer serials.
+      // If date is perfectly YYYY-MM-DD, reformat to YYYY-MM-DD HH:mm:ss so Google Sheets IMPORTDATA
+      // forcefully applies the visual Datetime mask instead of dropping to raw integers.
       if (typeof flatItem.date === "string" && flatItem.date.match(/^\d{4}-\d{2}-\d{2}$/)) {
-        const [y, m, d] = flatItem.date.split("-");
-        flatItem.date = `${m}/${d}/${y}`;
+        flatItem.date = `${flatItem.date} 00:00:00`;
+      } else if (typeof flatItem.date === "string" && flatItem.date.match(/^\d{2}\/\d{2}\/\d{4}$/)) {
+        const [m, d, y] = flatItem.date.split("/");
+        flatItem.date = `${y}-${m}-${d} 00:00:00`;
       }
     }
 
