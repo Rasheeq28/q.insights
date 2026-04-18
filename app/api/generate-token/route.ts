@@ -56,7 +56,7 @@ export async function POST(request: Request) {
 
     if (insertError) {
       console.error("Failed to insert api token to db:", insertError);
-      return NextResponse.json({ error: "Failed to persist token" }, { status: 500 });
+      return NextResponse.json({ error: "Failed to persist token: " + insertError.message, details: insertError }, { status: 500 });
     }
 
     // --- Build API URL (Defaults to JSON) ---

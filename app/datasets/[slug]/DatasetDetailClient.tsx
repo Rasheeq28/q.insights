@@ -117,12 +117,17 @@ export default function DatasetDetailClient({ dataset }: DatasetDetailClientProp
                 })
             });
 
-            if (!response.ok) throw new Error(await response.text());
+            if (!response.ok) {
+                const errText = await response.text();
+                alert(`API Error: ${errText}`);
+                throw new Error(errText);
+            }
             
             const result = await response.json();
             setTokenString(result.token);
-        } catch (error) {
+        } catch (error: any) {
             console.error("Token generation fail:", error);
+            alert(`Token generation failed: ${error.message || error}`);
         }
         
         setProcessing(false);
