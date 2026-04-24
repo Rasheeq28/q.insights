@@ -24,6 +24,7 @@ export default function DatasetDetailClient({ dataset }: DatasetDetailClientProp
     const [tokenString, setTokenString] = useState("");
     const [processing, setProcessing] = useState(false);
     const [limitReached, setLimitReached] = useState(false);
+    const [showFullAccess, setShowFullAccess] = useState(false);
     
     const router = useRouter();
 
@@ -292,6 +293,33 @@ export default function DatasetDetailClient({ dataset }: DatasetDetailClientProp
                                     >
                                         {processing ? "Processing..." : limitReached ? "Upgrade Required" : user ? "Get URL" : "Sign up to use data"}
                                     </button>
+
+                                    {!showFullAccess ? (
+                                        <button 
+                                            onClick={() => setShowFullAccess(true)}
+                                            className="w-full mt-3 bg-transparent hover:bg-black/5 text-[#1C1917] font-inter font-bold text-[16px] py-[16px] rounded-full transition-all flex justify-center items-center gap-2 border border-[#E7E5E4]"
+                                        >
+                                            Get full access
+                                        </button>
+                                    ) : (
+                                        <div className="mt-5 flex flex-col items-center gap-2 animate-in fade-in slide-in-from-top-2">
+                                            <p className="font-inter text-[14px] text-[#5B5B5B]">Email me at</p>
+                                            <button 
+                                                onClick={() => {
+                                                    navigator.clipboard.writeText('rasheeqferdous28@gmail.com');
+                                                    // Optional: Could add a toast or simple text change here, but native alert works for now.
+                                                }}
+                                                className="w-full bg-[#D1FC00] hover:bg-[#c6ef00] text-black font-mono font-bold text-[15px] py-4 rounded-lg transition-all border border-[#C5ED00]/50 shadow-sm active:scale-95 group relative overflow-hidden"
+                                                title="Click to copy"
+                                            >
+                                                <span className="group-hover:opacity-0 transition-opacity">rasheeqferdous28@gmail.com</span>
+                                                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                                    Click to copy
+                                                </div>
+                                            </button>
+                                            <p className="font-inter text-[14px] text-[#5B5B5B]">to get full access</p>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         )}
