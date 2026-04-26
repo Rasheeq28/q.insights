@@ -25,6 +25,12 @@ export default function DatasetDetailClient({ dataset }: DatasetDetailClientProp
     const [processing, setProcessing] = useState(false);
     const [limitReached, setLimitReached] = useState(false);
     const [showFullAccess, setShowFullAccess] = useState(false);
+    const [debugError, setDebugError] = useState<string | null>(null);
+    
+    useEffect(() => {
+        (window as any).setDebugError = setDebugError;
+        return () => { delete (window as any).setDebugError; };
+    }, []);
     
     const router = useRouter();
 
@@ -57,13 +63,18 @@ export default function DatasetDetailClient({ dataset }: DatasetDetailClientProp
 
             if (data && data.length > 0) {
                 setFilteredPreviewData(data);
-            } else if (dataset.previewData) {
-                const mappedFallback = dataset.previewData.map((row: any) => {
-                    const newRow: any = {};
-                    fieldsToFetch.forEach(f => newRow[f] = row[f]);
-                    return newRow;
-                });
-                setFilteredPreviewData(mappedFallback);
+                if ((window as any).setDebugError) (window as any).setDebugError(null);
+            } else {
+                if (error && (window as any).setDebugError) (window as any).setDebugError(error.message || JSON.stringify(error));
+                
+                if (dataset.previewData) {
+                    const mappedFallback = dataset.previewData.map((row: any) => {
+                        const newRow: any = {};
+                        fieldsToFetch.forEach(f => newRow[f] = row[f]);
+                        return newRow;
+                    });
+                    setFilteredPreviewData(mappedFallback);
+                }
             }
         } catch (e) {
             console.error(e);
@@ -334,6 +345,11 @@ export default function DatasetDetailClient({ dataset }: DatasetDetailClientProp
                         </div>
                         
                         <div className="flex flex-col gap-6 w-full">
+                            {debugError && (
+                                <div className="bg-red-50 text-red-600 p-4 rounded-xl border border-red-200 font-mono text-xs">
+                                    <strong>Supabase Error:</strong> {debugError}
+                                </div>
+                            )}
                             <div className="relative border border-[#E7E5E4] rounded-2xl overflow-hidden bg-white">
                                 {loading && (
                                     <div className="absolute inset-0 flex items-center justify-center bg-white/70 z-10 backdrop-blur-[2px]">
@@ -361,7 +377,7 @@ export default function DatasetDetailClient({ dataset }: DatasetDetailClientProp
                                                     <tr key={i} className="border-b border-[#F0F0F0]/50 hover:bg-[#FAFAFA] transition-colors last:border-0">
                                                         {selectedFields.map(field => (
                                                             <td key={field} className="py-4 px-4 text-[14px] text-[#1C1917] first:pl-6 last:pr-6 truncate max-w-[200px]">
-                                                                {row[field] !== null && row[field] !== undefined ? String(row[field]) : '-'}
+                                                                {row[field] !== null && row[field] !== undefined ? String(row[field]) : `[DEBUG: ${field} missing. Keys: ${Object.keys(row).join(', ')}]`}
                                                             </td>
                                                         ))}
                                                     </tr>
