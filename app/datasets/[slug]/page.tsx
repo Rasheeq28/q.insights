@@ -2,6 +2,9 @@ import { notFound } from "next/navigation";
 import DatasetDetailClient from "./DatasetDetailClient"; // Client component for interactivity
 import { supabase } from "@/lib/supabase";
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 interface PageProps {
     params: Promise<{ slug: string }>;
 }
