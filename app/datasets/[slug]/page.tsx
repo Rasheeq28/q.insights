@@ -7,7 +7,7 @@ interface PageProps {
 }
 
 const DATASET_TABLE_MAP: Record<string, string> = {
-  "dsex-prices-historical": "dsex_prices",
+  "dsex-prices-historical": "v_dsex_flat",
 };
 
 export default async function DatasetDetailPage(props: PageProps) {
@@ -45,6 +45,7 @@ export default async function DatasetDetailPage(props: PageProps) {
 
     const dataset = {
         ...data,
+        table_name: dbTableName,
         previewData: (realPreviewData && realPreviewData.length > 0) ? realPreviewData : data.preview_data,
         updatedAt: data.updated_at ? new Date(data.updated_at).toLocaleDateString() : "Live",
         totalRows: count || 0,
